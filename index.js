@@ -4,7 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // ============================================
 // KONFIGURASI
 // ============================================
-const GRID_SIZE = 20;        // 20x20 tiles (bisa ganti jadi 10)
+const GRID_SIZE = 20;        // 20x20 tiles 
 const TILE_SIZE = 2;         // Ukuran satu tile
 
 // ============================================
@@ -58,9 +58,10 @@ const grass_ao = textureLoader.load("./assets/textures/Grass005/Grass005_4K-JPG_
 // ============================================
 // CREATE GRID (LAHAN KOTA)
 // ============================================
-const tiles = [];          
-const tileMap = new Map();  
+const tiles = [];      
+// const tileMap = new Map(); ganti stack aja
 
+// GPT HELP ME TO CREATE THIS FUNCTION
 function createGrid() {
     const totalSize = GRID_SIZE * TILE_SIZE;
     const offset = totalSize / 2 - TILE_SIZE / 2;
@@ -76,7 +77,7 @@ function createGrid() {
     });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
+    // ground.receiveShadow = true;
     ground.position.y = -0.01;
     scene.add(ground);
     
@@ -84,7 +85,7 @@ function createGrid() {
     for (let x = 0; x < GRID_SIZE; x++) {
         for (let z = 0; z < GRID_SIZE; z++) {
             // Geometry tile
-            const tileGeo = new THREE.PlaneGeometry(TILE_SIZE - 0.1, TILE_SIZE - 0.1);
+            const tileGeo = new THREE.PlaneGeometry(TILE_SIZE , TILE_SIZE  );
             const tileMat = new THREE.MeshStandardMaterial({ 
                 map: grass_color,
                 normalMap: grass_normal,
@@ -105,13 +106,13 @@ function createGrid() {
                 gridX: x,
                 gridZ: z,
                 isEmpty: true,
-                object: null,
+                object: null, // buat taruh barang nanti
                 originalColor: grass_color 
             };
             
             scene.add(tile);
             tiles.push(tile);
-            tileMap.set(`${x},${z}`, tile);
+            // tileMap.set(`${x},${z}`, tile);
 
         }
     }
@@ -121,7 +122,7 @@ function createGrid() {
 createGrid();
 
 // ============================================
-// RAYCASTER untuk KLIK & HOVER
+// RAYCASTER untuk KLIK
 // ============================================
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
