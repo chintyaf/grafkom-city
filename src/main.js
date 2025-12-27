@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 // Import functions from other modules
 import { setupScene, setupLighting, animate } from "./scene";
 import { createPlane } from "./plane";
 import { loadModelTile, loadTilesObject } from "./function";
-
 
 // Setup scene, camera, renderer
 const { scene, camera, renderer } = setupScene();
@@ -17,14 +17,17 @@ const tiles = createPlane(scene, GRID_SIZE, TILE_SIZE);
 
 setupLighting(scene);
 
-let n = 55;
-tiles[n].data.isEmpty = false;
-tiles[n].data.object = "buildings/Big-Building.glb";
-loadTilesObject(tiles, scene);
+// Example: Load models onto tiles
+// let n = 55;
+// tiles[n].data.isEmpty = false;
+// tiles[n].data.object = "buildings/Big-Building.glb";
+// loadTilesObject(tiles, scene);
 
-tiles[56].data.isEmpty = false;
-tiles[56].data.object = "roads/Road-Bits.glb";
-loadModelTile(tiles[56], scene);
+// tiles[56].data.isEmpty = false;
+// tiles[56].data.object = "roads/Road-Bits.glb";
+// // loadModelTile(tiles[56], scene);
+
+
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -60,5 +63,3 @@ let selectedTile = null;
 //         tile.material.emissive.setHex(0x003300); // hijau
 //     }
 // });
-
-

@@ -24,8 +24,32 @@ function loadModelTile(tile, scene) {
     });
 }
 
+function loadRoads(path, scene) {
+    // GPT -> load model road bits
+    // Model nya terdiri dari beberapa bagian
+    // Minta GPT untuk bisa ngambil ke satu bagian
+    let loader = new GLTFLoader().load(
+        "roads/Road-Bits.glb",
+        function (result) {
+            result.scene.traverse((child) => {
+                if (child.isMesh) {
+                    console.log(child.name);
+                }
+            });
+            const straight =
+                result.scene.children[0].getObjectByName("road_straight");
+            console.log(straight);
+            straight.position.x = tiles[56].tile.position.x;
+            straight.position.z = tiles[56].tile.position.z;
+            straight.rotation.z = Math.PI / 2;
+            const road = straight.clone();
+            scene.add(road);
+        }
+    );
+}
+
 function loadTilesObject(tiles, scene) {
-    for(let tile of tiles) {
+    for (let tile of tiles) {
         if (!tile.data.isEmpty && tile.data.object) {
             loadModelTile(tile, scene);
         }
