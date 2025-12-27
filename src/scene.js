@@ -20,7 +20,7 @@ export function setupScene() {
     return { scene, camera, renderer };
 }
 
-export function lighting() {
+export function setupLighting(scene) {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 

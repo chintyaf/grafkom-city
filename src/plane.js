@@ -1,28 +1,5 @@
 import * as THREE from "three";
 
-const GRID_SIZE = 20; // 20x20 tiles
-const TILE_SIZE = 5; // Ukuran satu tile
-
-// ============================================
-// TEXTURE LOADER (RUMPUT(GRASS))
-// ============================================
-const textureLoader = new THREE.TextureLoader();
-
-const grass_color = textureLoader.load(
-    "./assets/textures/Grass005/Grass005_4K-JPG_Color.jpg"
-);
-const grass_normal = textureLoader.load(
-    "./assets/textures/Grass005/Grass005_4K-JPG_NormalGL.jpg"
-);
-const grass_roughness = textureLoader.load(
-    "./assets/textures/Grass005/Grass005_4K-JPG_Roughness.jpg"
-);
-const grass_ao = textureLoader.load(
-    "./assets/textures/Grass005/Grass005_4K-JPG_AmbientOcclusion.jpg"
-);
-
-
-
 // ============================================
 // CREATE GRID (LAHAN KOTA)
 // ============================================
@@ -30,7 +7,27 @@ const grass_ao = textureLoader.load(
 // const tileMap = new Map(); ganti stack aja
 
 // GPT HELP ME TO CREATE THIS FUNCTION
-export function createPlane(scene) {
+export function createPlane(scene, GRID_SIZE, TILE_SIZE) {
+
+    // ============================================
+    // TEXTURE LOADER (RUMPUT(GRASS))
+    // ============================================
+    const textureLoader = new THREE.TextureLoader();
+
+    const grass_color = textureLoader.load(
+        "/textures/Grass005/Grass005_4K-JPG_Color.jpg"
+    );
+
+    const grass_normal = textureLoader.load(
+        "/textures/Grass005/Grass005_4K-JPG_NormalGL.jpg"
+    );
+    const grass_roughness = textureLoader.load(
+        "/textures/Grass005/Grass005_4K-JPG_Roughness.jpg"
+    );
+    const grass_ao = textureLoader.load(
+        "/textures/Grass005/Grass005_4K-JPG_AmbientOcclusion.jpg"
+    );
+
     const tiles = [];
 
     const totalSize = GRID_SIZE * TILE_SIZE;
@@ -39,6 +36,7 @@ export function createPlane(scene) {
     // 1. Buat Ground Plane besar (base)
     const groundGeo = new THREE.PlaneGeometry(totalSize, totalSize);
     const groundMat = new THREE.MeshStandardMaterial({
+        // color: 0xffffff,
         map: grass_color,
         normalMap: grass_normal,
         roughnessMap: grass_roughness,
@@ -70,6 +68,7 @@ export function createPlane(scene) {
             tile.position.z = z * TILE_SIZE - offset;
             tile.position.y = 0.02;
             tile.receiveShadow = true;
+            tile.castShadow = true;
 
             // Simpan data tile
             tile.userData = {
@@ -87,5 +86,3 @@ export function createPlane(scene) {
     }
     return tiles;
 }
-
-
