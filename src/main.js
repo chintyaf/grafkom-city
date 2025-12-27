@@ -1,17 +1,21 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { PointerLockControls } from "three/examples/jsm/Addons.js";
+
+// GPT -> Integrasi antar module (Export, Import)
+// utk memudahkan dalam pengelolaan kode
 
 // Import functions from other modules
 import { setupScene, setupLighting, animate } from "./scene";
 import { createPlane } from "./plane";
-import { loadModelTile, loadTilesObject } from "./function";
+import { loadModel,loadModelTile, loadTilesObject } from "./function";
 
 // Setup scene, camera, renderer
 const { scene, camera, renderer } = setupScene();
 
+const TILE_SIZE = 2; // Ukuran Tile
 const GRID_SIZE = 10; // 20x20 tiles
-const TILE_SIZE = 2; // Ukuran satu tile
 
 const tiles = createPlane(scene, GRID_SIZE, TILE_SIZE);
 
@@ -20,16 +24,28 @@ setupLighting(scene);
 // Example: Load models onto tiles
 let n = 55;
 tiles[n].userData.isEmpty = false;
-tiles[n].userData.object = "buildings/Big-Building.glb";
+tiles[n].userData.object = "big_building";
+tiles[n].userData.rotation = "right";
+
+tiles[56].userData.isEmpty = false;
+tiles[56].userData.object = "roads";
+tiles[56].userData.rotation = "left";
+
 loadTilesObject(tiles, scene);
-
-// tiles[56].userData.isEmpty = false;
-// tiles[56].userData.object = "roads/Road-Bits.glb";
-// loadModelTile(tiles[56], scene);
-
 const controls = new OrbitControls(camera, renderer.domElement);
 
 animate(renderer, scene, camera, controls);
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 // ============================================
 // RAYCASTER untuk KLIK
@@ -47,8 +63,8 @@ window.addEventListener("click", (event) => {
 
     // Hanya memilih objek plane (tiles)
     const intersects = raycaster.intersectObjects(tiles);
-    console.log(intersects);
-    if (intersects.length > 0) {    
+
+    if (intersects.length > 0) {
         const tile = intersects[0].object;
 
         // Reset tile sebelumnya

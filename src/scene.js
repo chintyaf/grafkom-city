@@ -10,7 +10,7 @@ export function setupScene() {
         1000
     );
 
-    camera.position.set(0, 0, 20);
+    camera.position.set(0, 10, 20);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });

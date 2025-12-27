@@ -1,9 +1,5 @@
 import * as THREE from "three";
 
-// ============================================
-// CREATE GRID (LAHAN KOTA)
-// ============================================
-
 // const tileMap = new Map(); ganti stack aja
 
 // GPT HELP ME TO CREATE THIS FUNCTION
@@ -43,11 +39,10 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
     ground.position.y = -0.01;
     scene.add(ground);
 
-    // 2. Buat individual tiles PAKE GPT
+    // 2. Buat individual tiles
     const tiles = [];
-    // [tiles, [....]]
-    for (let x = 0; x < GRID_SIZE; x++) {
-        for (let z = 0; z < GRID_SIZE; z++) {
+    for (let z = 0; z < GRID_SIZE; z++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
             // Geometry tile
             const tileGeo = new THREE.PlaneGeometry(TILE_SIZE, TILE_SIZE);
             const tileMat = new THREE.MeshStandardMaterial({
@@ -69,15 +64,20 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
             tile.castShadow = true;
 
             // Simpan data menggunakan userData
+            // GPT -> menyimpan informasi utk tile
+            // Memudahkan untuk memodifikasi data atau me-select di tile tertentu
             tile.userData = {
                 gridX: x,
                 gridZ: z,
-                positionX: tile.position.x,
-                positionZ: tile.position.z,
                 isEmpty: true,
-                object: null,
+
+                object: null, // Bangunan yang akan dimasukkan
+                direction: "right",
+                scale: { x: 0.5, y: 0.5, z: 0.5 },
+
                 originalColor: grass_color,
             };
+
 
             scene.add(tile);
             tiles.push(tile);
