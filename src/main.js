@@ -10,6 +10,7 @@ import { PointerLockControls } from "three/examples/jsm/Addons.js";
 import { setupScene, setupLighting, animate } from "./scene";
 import { createPlane } from "./plane";
 import { loadModel,loadModelTile, loadTilesObject } from "./function";
+import { addBuilding, removeBuilding, rotateBuilding } from "./building";
 
 // Setup scene, camera, renderer
 const { scene, camera, renderer } = setupScene();
@@ -72,8 +73,9 @@ window.addEventListener("click", (event) => {
             // selectedTile.material.color.set(0x000000);
             selectedTile.material.emissive.setHex(0x000000);
         }
-
+        
         selectedTile = tile;
+        // rotateBuilding(selectedTile, scene, "back");
         // tile.material.color.set(0x003300);
         tile.material.emissive.setHex(0x003300); // hijau
     }

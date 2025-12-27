@@ -69,11 +69,11 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
             tile.userData = {
                 gridX: x,
                 gridZ: z,
-                isEmpty: true,
 
+                isEmpty: true,
                 object: null, // Bangunan yang akan dimasukkan
-                direction: "right",
-                scale: { x: 0.5, y: 0.5, z: 0.5 },
+                instance: [], // Reference ke scene object (utk bisa di modifikasi)
+                direction: "",
 
                 originalColor: grass_color,
             };
