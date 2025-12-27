@@ -4,8 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grafkom City</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            outline: none;
+        }
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            width: 280px;
+        }
+
+        h3 {
+            margin: 10px 0 5px 0;
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin: 3px;
+            border: 2px solid #333;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #f0f0f0;
+        }
+
+        button.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        #status {
+            margin-top: 10px;
+            padding: 8px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-size: 11px;
+            border-left: 3px solid #333;
+        }
+
+        .rotate-btn {
+            width: 96%;
+            margin-top: 8px;
+            background-color: #ff9800;
+            border-color: #e65100;
+            color: white;
+            font-weight: bold;
+        }
+        .rotate-btn:hover {
+            background-color: #fb8c00;
+        }
+    </style>
 </head>
 <body>
-    <script src="./src/scene.js" type="module"></script>
+    <div id="ui">
+        <h3>MODE</h3>
+        <button class="mode-btn" id="btn-building" onclick="setMode('building')">Building</button>
+        <button class="mode-btn" id="btn-road" onclick="setMode('road')">Road</button>
+        <button class="mode-btn" id="btn-nature" onclick="setMode('nature')">Nature</button>
+        
+        <h3>OBJECT</h3>
+        <div id="object-buttons">
+            </div>
+        
+        <div id="status">Mode: - | Object: -</div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module" src="index.js"></script>
 </body>
 </html>
