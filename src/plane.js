@@ -68,19 +68,19 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
             tile.receiveShadow = true;
             tile.castShadow = true;
 
+            // Simpan data menggunakan userData
+            tile.userData = {
+                gridX: x,
+                gridZ: z,
+                positionX: tile.position.x,
+                positionZ: tile.position.z,
+                isEmpty: true,
+                object: null,
+                originalColor: grass_color,
+            };
+
             scene.add(tile);
-            tiles.push({
-                tile: tile,
-                data: {
-                    gridX: x,
-                    gridZ: z,
-                    positionX: tile.position.x,
-                    positionZ: tile.position.z,
-                    isEmpty: true,
-                    object: null,
-                    originalColor: grass_color, // menempatkan objek
-                },
-            });
+            tiles.push(tile);
             // tileMap.set(`${x},${z}`, tile);
         }
     }

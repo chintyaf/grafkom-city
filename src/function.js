@@ -5,8 +5,9 @@ function loadModel(path, scene) {
     console.log("jalan");
     let loader = new GLTFLoader().load(path, function (result) {
         result.scene.position.y = 0.01;
-        result.scene.position.x = tiles[0].data.positionX;
-        result.scene.position.z = tiles[0].data.positionZ;
+        result.scene.position.x = tiles[0].position.x;
+        result.scene.position.z = tiles[0].position.z;
+        // result.scene.rotation.z = Math.PI / 2; // Rotate 180 degrees
         result.scene.scale.set(0.5, 0.5, 0.5);
         scene.add(result.scene);
     });
@@ -15,10 +16,17 @@ function loadModel(path, scene) {
 // Load modwl dari tile
 function loadModelTile(tile, scene) {
     console.log("jalan");
-    new GLTFLoader().load(tile.data.object, function (result) {
+    new GLTFLoader().load(tile.userData.object, function (result) {
         result.scene.position.y = 0.01;
-        result.scene.position.x = tile.data.positionX;
-        result.scene.position.z = tile.data.positionZ;
+        result.scene.position.x = tile.position.x;
+        result.scene.position.z = tile.position.z;
+
+        // Front : Math.PI * 2
+        // Right : Math.PI / 2
+        // Back : Math.PI
+        // Left : -Math.PI / 2
+        result.scene.rotation.y = Math.PI * 2; // right
+
         result.scene.scale.set(0.43, 0.43, 0.4);
         scene.add(result.scene);
     });
@@ -50,7 +58,7 @@ function loadRoads(path, scene) {
 
 function loadTilesObject(tiles, scene) {
     for (let tile of tiles) {
-        if (!tile.data.isEmpty && tile.data.object) {
+        if (!tile.userData.isEmpty && tile.userData.object) {
             loadModelTile(tile, scene);
         }
     }
