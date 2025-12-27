@@ -1,15 +1,5 @@
 import * as THREE from "three";
 
-// ============================================
-// KONFIGURASI
-// ============================================
-const GRID_SIZE = 20; // 20x20 tiles
-const TILE_SIZE = 5; // Ukuran satu tile
-
-// ============================================
-// TEXTURE LOADER (RUMPUT(GRASS))
-// ============================================
-const textureLoader = new THREE.TextureLoader();
 
 const grass_color = textureLoader.load(
     "./assets/textures/Grass005/Grass005_4K-JPG_Color.jpg"
@@ -71,6 +61,7 @@ function createGrid() {
             tile.receiveShadow = true;
 
             // Simpan data tile
+            // GPT
             tile.userData = {
                 gridX: x,
                 gridZ: z,

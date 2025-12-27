@@ -7,11 +7,7 @@ import * as THREE from "three";
 // const tileMap = new Map(); ganti stack aja
 
 // GPT HELP ME TO CREATE THIS FUNCTION
-export function createPlane(scene, GRID_SIZE, TILE_SIZE) {
-
-    // ============================================
-    // TEXTURE LOADER (RUMPUT(GRASS))
-    // ============================================
+function createPlane(scene, GRID_SIZE, TILE_SIZE) {
     const textureLoader = new THREE.TextureLoader();
 
     const grass_color = textureLoader.load(
@@ -28,20 +24,18 @@ export function createPlane(scene, GRID_SIZE, TILE_SIZE) {
         "/textures/Grass005/Grass005_4K-JPG_AmbientOcclusion.jpg"
     );
 
-    const tiles = [];
-
     const totalSize = GRID_SIZE * TILE_SIZE;
     const offset = totalSize / 2 - TILE_SIZE / 2;
 
     // 1. Buat Ground Plane besar (base)
     const groundGeo = new THREE.PlaneGeometry(totalSize, totalSize);
     const groundMat = new THREE.MeshStandardMaterial({
-        // color: 0xffffff,
-        map: grass_color,
-        normalMap: grass_normal,
-        roughnessMap: grass_roughness,
-        aoMap: grass_ao,
-        side: THREE.DoubleSide,
+        color: 0x85bd7d,
+        // map: grass_color,
+        // normalMap: grass_normal,
+        // roughnessMap: grass_roughness,
+        // aoMap: grass_ao,
+        // side: THREE.DoubleSide,
     });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
@@ -50,16 +44,20 @@ export function createPlane(scene, GRID_SIZE, TILE_SIZE) {
     scene.add(ground);
 
     // 2. Buat individual tiles PAKE GPT
+    const tiles = [];
+    // [tiles, [....]]
     for (let x = 0; x < GRID_SIZE; x++) {
         for (let z = 0; z < GRID_SIZE; z++) {
             // Geometry tile
             const tileGeo = new THREE.PlaneGeometry(TILE_SIZE, TILE_SIZE);
             const tileMat = new THREE.MeshStandardMaterial({
-                map: grass_color,
-                normalMap: grass_normal,
-                roughnessMap: grass_roughness,
-                aoMap: grass_ao,
-                side: THREE.DoubleSide,
+                wireframe: true,
+                color: 0x000000,
+                // map: grass_color,
+                // normalMap: grass_normal,
+                // roughnessMap: grass_roughness,
+                // aoMap: grass_ao,
+                // side: THREE.DoubleSide,
             });
 
             const tile = new THREE.Mesh(tileGeo, tileMat);
@@ -70,19 +68,23 @@ export function createPlane(scene, GRID_SIZE, TILE_SIZE) {
             tile.receiveShadow = true;
             tile.castShadow = true;
 
-            // Simpan data tile
-            tile.userData = {
-                gridX: x,
-                gridZ: z,
-                isEmpty: true,
-                object: null, // buat taruh barang nanti
-                originalColor: grass_color,
-            };
-
             scene.add(tile);
-            tiles.push(tile);
+            tiles.push({
+                tile: tile,
+                data: {
+                    gridX: x,
+                    gridZ: z,
+                    positionX: tile.position.x,
+                    positionZ: tile.position.z,
+                    isEmpty: true,
+                    object: null,
+                    originalColor: grass_color, // menempatkan objek
+                },
+            });
             // tileMap.set(`${x},${z}`, tile);
         }
     }
     return tiles;
 }
+
+export { createPlane };
