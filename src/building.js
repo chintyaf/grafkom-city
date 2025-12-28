@@ -17,17 +17,26 @@ export const BUILDINGS = {
             scale: { x: 1, y: 1, z: 1 },
         },
     ],
+    red_building: [
+        {
+            model: "buildings/Building-Red.glb",
+            offset: { x: 0, y: 0, z: 0 },
+            scale: { x: 0.4, y: 0.4, z: 0.4 },
+        },
+    ],
 };
 
-function addBuilding(tile, scene) {
+function addBuilding(tile, scene, building_type) {
+    // console.log(building_type);
     tile.userData.isEmpty = false;
-    tile.userData.object = "roads";
+    tile.userData.object = building_type;
     tile.userData.direction = "front";
 
     loadModelTile(tile, scene);
 }
 
 function removeBuilding(tile, scene) {
+    // console.log(tile);
     if (!tile.userData.instance) {
         console.log("No instance to remove");
         return;
@@ -35,7 +44,9 @@ function removeBuilding(tile, scene) {
 
     for (let ins of tile.userData.instance) {
         // GPT -> hapus instance dari scene
+
         scene.remove(ins);
+        // tile.userData.instance.pop(ins);
     }
 
     tile.userData.isEmpty = true;
@@ -46,21 +57,29 @@ function removeBuilding(tile, scene) {
     loadModelTile(tile, scene);
 }
 
-function rotateBuilding(tile, scene, direction) {
-    console.log("Rotating building on tile:", tile);
+function rotateBuilding(tile, scene) {
     if (!tile.userData.instance) {
         console.log("No instance to remove");
         return;
     }
 
-    tile.userData.direction = direction;
+    // console.log("tile", tile.userData.direction );
+    if (tile.userData.direction === "front") {
+        tile.userData.direction = "left";
+    } else if (tile.userData.direction === "left") {
+        tile.userData.direction = "back";
+    } else if (tile.userData.direction === "back") {
+        tile.userData.direction = "right";
+    } else if (tile.userData.direction === "right") {
+        tile.userData.direction = "front";
+    }
 
     for (let ins of tile.userData.instance) {
         scene.remove(ins);
+        // tile.userData.instance.pop();
     }
 
     loadModelTile(tile, scene);
 }
-
 
 export { addBuilding, removeBuilding, rotateBuilding };

@@ -1,7 +1,17 @@
+import * as THREE from "three";
+
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import { BUILDINGS } from "./building.js";
+import { GRID_SIZE, TILE_SIZE } from "./main.js";
+import { selectDirection, modeBuilding } from "./building-mode.js";
 
+const DIR = {
+    front: Math.PI * 2,
+    right: Math.PI / 2,
+    back: Math.PI,
+    left: -Math.PI / 2,
+};
 
 function objRotate(direction) {
     if (direction === "front") {
@@ -17,6 +27,8 @@ function objRotate(direction) {
     }
 }
 
+
+
 // Load model secata general
 function loadModel(path, scene) {
     let loader = new GLTFLoader().load(path, function (result) {
@@ -29,34 +41,28 @@ function loadModel(path, scene) {
 function loadModelTile(tile, scene) {
     const object = BUILDINGS[tile.userData.object];
 
-    if (tile.userData.object === "roads") {
-        loadRoads(tile, scene);
-    } else if (object) {
+    if (object) {
         for (let obj of object) {
             new GLTFLoader().load(obj.model, function (result) {
-                result.scene.position.y = 0.01;
-                result.scene.position.x = tile.position.x - obj.offset.x;
-                result.scene.position.z = tile.position.z - obj.offset.z;
+                let model = result.scene;
 
-                result.scene.rotation.y = objRotate(tile.userData.direction);
+                model.position.y = 0.01;
+                model.position.x = tile.position.x - obj.offset.x;
+                model.position.z = tile.position.z - obj.offset.z;
+                model.rotation.y = objRotate(tile.userData.direction);
+                model.scale.set(obj.scale.x, obj.scale.y, obj.scale.z);
 
-                result.scene.scale.set(obj.scale.x, obj.scale.y, obj.scale.z);
-
-                tile.userData.instance.push(result.scene);
-                scene.add(result.scene);
+                tile.userData.instance.push(model);
+                scene.add(model);
             });
         }
     } else {
-
         console.log("Object not found in BUILDINGS:", tile.userData.object);
     }
 }
 
 // Handle logics for the road model
-
-
-
-function loadRoads(tile, scene) {
+function loadRoads(tiles, tile, scene) {
     // GPT -> load model road bits
     // Model nya terdiri dari beberapa bagian
     // Minta untuk bisa ngambil ke satu bagian
@@ -69,10 +75,65 @@ function loadRoads(tile, scene) {
             //     }
             // });
 
-            const road = result.scene.children[0].getObjectByName("road_straight").clone();
+            // Check sekitar
+            let top =
+                tiles[tile.userData.index - GRID_SIZE].userData.object ===
+                "roads";
+            let right =
+                tiles[tile.userData.index + 1].userData.object === "roads";
+            let bottom =
+                tiles[tile.userData.index + GRID_SIZE].userData.object ===
+                "roads";
+            let left =
+                tiles[tile.userData.index - 1].userData.object === "roads";
+
+            let connected = 0;
+            if (top) connected++;
+            if (right) connected++;
+            if (bottom) connected++;
+            if (left) connected++;
+
+            let model = result.scene.children[0];
+
+            let road_type;
+            let road_dir = Math.PI * 2;
+
+            if (connected === 2) {
+                road_type = "road_corner";
+            } else if (connected === 3) {
+                // console.log(tile.userData.index, "Three connection", connected);
+                road_type = "road_tsplit";
+
+                if (right && left) {
+                    if (bottom) {
+                        road_dir = -Math.PI / 2;
+                    } else if (top) {
+                        road_dir = Math.PI / 2;
+                    }
+                }
+
+                if (bottom & top) {
+                    if (left) {
+                        road_dir = Math.PI;
+                    } else if (right) {
+                        road_dir = Math.PI * 2;
+                    }
+                }
+            } else if (connected === 4) {
+                road_type = "road_junction";
+            } else {
+                if (right || left) {
+                    road_dir = Math.PI / 2;
+                }
+                // console.log(tile.userData.index, "One connection", connected);
+                road_type = "road_straight";
+            }
+            let road = model.getObjectByName(road_type).clone();
+
             road.position.x = tile.position.x;
+            // console.log(road_dir);
             road.position.z = tile.position.z;
-            // road.rotation.z = Math.PI / 2;
+            road.rotation.z = road_dir;
             tile.userData.instance.push(road);
             scene.add(road);
         }
@@ -83,7 +144,11 @@ function loadRoads(tile, scene) {
 function loadTilesObject(tiles, scene) {
     for (let tile of tiles) {
         if (!tile.userData.isEmpty && tile.userData.object) {
-            loadModelTile(tile, scene);
+            if (tile.userData.object == "roads") {
+                loadRoads(tiles, tile, scene);
+            } else {
+                loadModelTile(tile, scene);
+            }
         }
     }
 }

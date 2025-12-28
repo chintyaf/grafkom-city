@@ -41,6 +41,7 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
 
     // 2. Buat individual tiles
     const tiles = [];
+    let i = 0;
     for (let z = 0; z < GRID_SIZE; z++) {
         for (let x = 0; x < GRID_SIZE; x++) {
             // Geometry tile
@@ -67,6 +68,7 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
             // GPT -> menyimpan informasi utk tile
             // Memudahkan untuk memodifikasi data atau me-select di tile tertentu
             tile.userData = {
+                index : i++,
                 gridX: x,
                 gridZ: z,
 
@@ -75,7 +77,7 @@ function createPlane(scene, GRID_SIZE, TILE_SIZE) {
                 instance: [], // Reference ke scene object (utk bisa di modifikasi)
                 direction: "",
 
-                originalColor: grass_color,
+                // originalColor: grass_color,
             };
 
 
