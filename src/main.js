@@ -16,8 +16,10 @@ import {
 } from "./function";
 import { addBuilding, removeBuilding, rotateBuilding } from "./building";
 
-import { modeNature, modeRoad } from "./ui";
+import { modeNature } from "./ui";
+import { modeRoad, placeRoad } from "./road-mode.js";
 import { modeBuilding, editBuilding } from "./building-mode";
+import { updateCars } from "./car.js";
 
 // Setup scene, camera, renderer
 export var { scene, camera, renderer } = setupScene();
@@ -53,9 +55,29 @@ tiles[46].userData.object = "roads";
 loadTilesObject(tiles, scene);
 const controls = new OrbitControls(camera, renderer.domElement);
 
+const clock = new THREE.Clock();
+let activeMode = "none"; // building, road, nature, none
+
+function animateLoop() {
+    requestAnimationFrame(animateLoop);
+    
+    // 1. Hitung waktu (detik) antar frame agar gerakan halus
+    const delta = clock.getDelta(); 
+
+    // 2. Update Orbit Controls
+    controls.update();
+    
+    // 3. Update Logika Mobil (Spawn & Jalan)
+    // Kirim 'tiles' agar mobil tau mana jalan, dan 'delta' agar speed konsisten
+    updateCars(tiles, scene, delta);
+
+    // 4. Render Scene
+    renderer.render(scene, camera);
+}
+animateLoop();
 
 // saveTiles(tiles);
-animate(renderer, scene, camera, controls);
+//animate(renderer, scene, camera, controls);
 
 //
 // TESTING AREA
@@ -70,7 +92,8 @@ btn_building.addEventListener("click", (event) => {
 });
 
 btn_road.addEventListener("click", (event) => {
-    modeRoad();
+    activeMode = "road"; // Set mode
+    modeRoad(tiles, scene);
 });
 
 btn_nature.addEventListener("click", (event) => {
@@ -95,39 +118,85 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let selectedTile = null;
 
-let clickTiles = (event) => {
+window.addEventListener("click", (event) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = (event.clientY / window.innerHeight) * -2 + 1;
-
     raycaster.setFromCamera(mouse, camera);
-
-    // Hanya memilih objek plane (tiles)
     const intersects = raycaster.intersectObjects(tiles);
 
     if (intersects.length > 0) {
         const tile = intersects[0].object;
-
-        // Reset tile sebelumnya
-        if (selectedTile) {
-            // selectedTile.material.color.set(0x000000);
-            selectedTile.material.emissive.setHex(0x000000);
-        }
-
+        if (selectedTile) selectedTile.material.emissive.setHex(0x000000);
         selectedTile = tile;
+        tile.material.emissive.setHex(0x003300);
 
-        if (selectedTile.userData.object) {
-            console.log("select tile yg ada objek : ", selectedTile);
-            editBuilding(selectedTile);
-            // window.removeEventListener("click", clickTiles);
+        if (activeMode === "road") {
+            placeRoad(tile, scene, tiles);
+        } else if (activeMode === "building") {
+            if (tile.userData.object && tile.userData.object !== "roads") {
+                editBuilding(tile);
+            }
         }
-        // addBuilding(tile, scene, "roads");
-        // rotateBuilding(selectedTile, scene, "back");
-        // tile.material.color.set(0x003300);
-        tile.material.emissive.setHex(0x003300); // hijau
     }
-};
+});
 
-window.addEventListener("click", clickTiles);
+// let clickTiles = (event) => {
+//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//     mouse.y = (event.clientY / window.innerHeight) * -2 + 1;
+
+//     raycaster.setFromCamera(mouse, camera);
+
+//     // Hanya memilih objek plane (tiles)
+//     const intersects = raycaster.intersectObjects(tiles);
+
+//     if (intersects.length > 0) {
+//         const tile = intersects[0].object;
+
+//         // Reset tile sebelumnya
+//         if (selectedTile) {
+//             // selectedTile.material.color.set(0x000000);
+//             selectedTile.material.emissive.setHex(0x000000);
+//         }
+
+//         selectedTile = tile;
+
+//         if (selectedTile.userData.object) {
+//             console.log("select tile yg ada objek : ", selectedTile);
+//             editBuilding(selectedTile);
+//             // window.removeEventListener("click", clickTiles);
+//         }
+//         // addBuilding(tile, scene, "roads");
+//         // rotateBuilding(selectedTile, scene, "back");
+//         // tile.material.color.set(0x003300);
+//         tile.material.emissive.setHex(0x003300); // hijau
+
+//         if (intersects.length > 0) {
+//         const tile = intersects[0].object;
+
+//         // Reset tile sebelumnya
+//         if (selectedTile) {
+//             selectedTile.material.emissive.setHex(0x000000);
+//         }
+//         selectedTile = tile;
+//         tile.material.emissive.setHex(0x003300);
+
+//         // --- LOGIKA KLIK BERDASARKAN MODE ---
+        
+//         if (activeMode === "road") {
+//             // Panggil fungsi placeRoad dari road-mode.js
+//             placeRoad(selectedTile, scene, tiles);
+//         } 
+//         else if (activeMode === "building") {
+//             // Logika existing building
+//             if (selectedTile.userData.object && selectedTile.userData.object !== "roads") {
+//                 editBuilding(selectedTile);
+//             }
+//         }
+//         // ------------------------------------
+//     }
+//     }
+// };
+// window.addEventListener("click", clickTiles);
 
 function saveTiles(tiles) {
     // Extract only relevant data

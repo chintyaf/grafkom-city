@@ -69,73 +69,66 @@ function loadRoads(tiles, tile, scene) {
     let loader = new GLTFLoader().load(
         "roads/Road-Bits.glb",
         function (result) {
-            // result.scene.traverse((child) => {
-            //     if (child.isMesh) {
-            //         console.log(child.name);
-            //     }
-            // });
-
-            // Check sekitar
-            let top =
-                tiles[tile.userData.index - GRID_SIZE].userData.object ===
-                "roads";
-            let right =
-                tiles[tile.userData.index + 1].userData.object === "roads";
-            let bottom =
-                tiles[tile.userData.index + GRID_SIZE].userData.object ===
-                "roads";
-            let left =
-                tiles[tile.userData.index - 1].userData.object === "roads";
-
-            let connected = 0;
-            if (top) connected++;
-            if (right) connected++;
-            if (bottom) connected++;
-            if (left) connected++;
-
             let model = result.scene.children[0];
-
             let road_type;
             let road_dir = Math.PI * 2;
 
-            if (connected === 2) {
-                road_type = "road_corner";
-            } else if (connected === 3) {
-                // console.log(tile.userData.index, "Three connection", connected);
-                road_type = "road_tsplit";
+            // --- LOGIKA BARU: Cek Manual Selection ---
+            if (tile.userData.specificType) {
+                // Jika user memilih manual lewat road-mode.js
+                road_type = tile.userData.specificType;
+                
+                // Gunakan helper objRotate untuk konversi "front/left" ke Radian
+                road_dir = objRotate(tile.userData.direction);
 
-                if (right && left) {
-                    if (bottom) {
-                        road_dir = -Math.PI / 2;
-                    } else if (top) {
-                        road_dir = Math.PI / 2;
-                    }
-                }
-
-                if (bottom & top) {
-                    if (left) {
-                        road_dir = Math.PI;
-                    } else if (right) {
-                        road_dir = Math.PI * 2;
-                    }
-                }
-            } else if (connected === 4) {
-                road_type = "road_junction";
             } else {
-                if (right || left) {
-                    road_dir = Math.PI / 2;
-                }
-                // console.log(tile.userData.index, "One connection", connected);
-                road_type = "road_straight";
-            }
-            let road = model.getObjectByName(road_type).clone();
+                // --- LOGIKA LAMA (Auto Connect) ---
+                // (Biarkan kode lama di sini sebagai fallback)
+                let top = tiles[tile.userData.index - GRID_SIZE]?.userData.object === "roads";
+                let right = tiles[tile.userData.index + 1]?.userData.object === "roads";
+                let bottom = tiles[tile.userData.index + GRID_SIZE]?.userData.object === "roads";
+                let left = tiles[tile.userData.index - 1]?.userData.object === "roads";
 
-            road.position.x = tile.position.x;
-            // console.log(road_dir);
-            road.position.z = tile.position.z;
-            road.rotation.z = road_dir;
-            tile.userData.instance.push(road);
-            scene.add(road);
+                let connected = 0;
+                if (top) connected++;
+                if (right) connected++;
+                if (bottom) connected++;
+                if (left) connected++;
+
+                if (connected === 2) {
+                    road_type = "road_corner";
+                } else if (connected === 3) {
+                    road_type = "road_tsplit";
+                    // ... (logika rotasi auto tsplit lama) ...
+                    if (right && left) { if (bottom) road_dir = -Math.PI / 2; else if (top) road_dir = Math.PI / 2; }
+                    if (bottom & top) { if (left) road_dir = Math.PI; else if (right) road_dir = Math.PI * 2; }
+                } else if (connected === 4) {
+                    road_type = "road_junction";
+                } else {
+                    if (right || left) road_dir = Math.PI / 2;
+                    road_type = "road_straight";
+                }
+            }
+            // ------------------------------------------
+
+            // Load Mesh sesuai tipe yang ditentukan
+            let road = model.getObjectByName(road_type);
+            
+            // Error handling kalau nama mesh salah di GLB
+            if(road) {
+                let roadClone = road.clone();
+                roadClone.position.x = tile.position.x;
+                roadClone.position.z = tile.position.z;
+                roadClone.rotation.z = road_dir; // Perhatikan: Road-Bits biasanya rotasi Z atau Y tergantung export
+                
+                // Fix posisi Y agar tidak flickering dengan tanah
+                roadClone.position.y = 0.02; 
+
+                tile.userData.instance.push(roadClone);
+                scene.add(roadClone);
+            } else {
+                console.warn("Road Type not found in GLB:", road_type);
+            }
         }
     );
 }
