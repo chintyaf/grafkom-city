@@ -168,6 +168,55 @@ loader.load('/models/Building-bbH2Bg73qM.glb', (gltf) => {
 
 //JEA
 //KODE
+loader.load('/models/city_park_at_sunset.glb', (gltf) => {
+  const park = gltf.scene
+  park.position.set(25, 0, -25)
+  park.scale.set(0.1,0.1,0.1)
+  scene.add(park)
+})
+
+loader.load('/models/school_building.glb', (gltf) => {
+  const school = gltf.scene
+  school.position.set(25, 0, -8)
+  school.scale.set(4,4,4)
+  scene.add(school)
+})
+
+loader.load('/models/soccer_field.glb', (gltf) => {
+  const soccer = gltf.scene
+  soccer.position.set(20, 0, -8)
+  soccer.scale.set(0.1,0.1,0.1)
+  scene.add(soccer)
+})
+
+loader.load('/models/restaurant_building.glb', (gltf) => {
+  const restaurant = gltf.scene
+  restaurant.position.set(5,1, -5)
+  restaurant.scale.set(0.3,0.3,0.3)
+  scene.add(restaurant)
+})
+
+loader.load('/models/bakery.glb', (gltf) => {
+  const bakery = gltf.scene
+  bakery.position.set(3,0, -45)
+  bakery.scale.set(0.3,0.3,0.3)
+  scene.add(bakery)
+})
+
+loader.load('/models/apartment_building.glb', (gltf) => {
+  const apartment = gltf.scene
+  apartment.position.set(7,0, -45)
+  apartment.scale.set(0.006,0.006,0.006)
+  scene.add(apartment)
+})
+
+loader.load('/models/gas_station.glb', (gltf) => {
+  const gas_station = gltf.scene
+  gas_station.position.set(20,0, -45)
+  gas_station.scale.set(0.3,0.3,0.3)
+  scene.add(gas_station)
+})
+
 //END OF JEA
 
 function animate() {
