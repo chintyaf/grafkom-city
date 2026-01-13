@@ -175,54 +175,143 @@ loader.load('/models/low_poly_city-pack.glb', (gltf) => {
 
 //JEA
 //KODE
-loader.load('/models/city_park_at_sunset.glb', (gltf) => {
-  const park = gltf.scene
-  park.position.set(25, 0, -25)
-  park.scale.set(0.1,0.1,0.1)
-  scene.add(park)
+loader.load('/models/apartment_building.glb', (gltf) => {
+  const apartment = gltf.scene
+  apartment.position.set(5, 0,-45)
+  apartment.scale.set(0.005,0.005,0.005)
+  scene.add(apartment)
 })
-
-loader.load('/models/school_building.glb', (gltf) => {
-  const school = gltf.scene
-  school.position.set(25, 0, -8)
-  school.scale.set(4,4,4)
-  scene.add(school)
-})
-
-loader.load('/models/soccer_field.glb', (gltf) => {
-  const soccer = gltf.scene
-  soccer.position.set(20, 0, -8)
-  soccer.scale.set(0.1,0.1,0.1)
-  scene.add(soccer)
-})
-
-loader.load('/models/restaurant_building.glb', (gltf) => {
-  const restaurant = gltf.scene
-  restaurant.position.set(5,1, -5)
-  restaurant.scale.set(0.3,0.3,0.3)
-  scene.add(restaurant)
+loader.load('/models/apartment_building.glb', (gltf) => {
+  const apartment = gltf.scene
+  apartment.position.set(10, 0,-45)
+  apartment.scale.set(0.005,0.005,0.005)
+  scene.add(apartment)
 })
 
 loader.load('/models/bakery.glb', (gltf) => {
   const bakery = gltf.scene
-  bakery.position.set(3,0, -45)
+  bakery.position.set(14, 0,-45)
   bakery.scale.set(0.3,0.3,0.3)
   scene.add(bakery)
 })
 
-loader.load('/models/apartment_building.glb', (gltf) => {
-  const apartment = gltf.scene
-  apartment.position.set(7,0, -45)
-  apartment.scale.set(0.006,0.006,0.006)
-  scene.add(apartment)
+loader.load('/models/bakery.glb', (gltf) => {
+  const bakery = gltf.scene
+  bakery.position.set(15, 0,-45)
+  bakery.scale.set(0.3,0.3,0.3)
+  scene.add(bakery)
 })
 
-loader.load('/models/gas_station.glb', (gltf) => {
-  const gas_station = gltf.scene
-  gas_station.position.set(20,0, -45)
-  gas_station.scale.set(0.3,0.3,0.3)
-  scene.add(gas_station)
+loader.load('/models/hospital.glb', (gltf) => {
+  const hospital = gltf.scene
+  hospital.position.set(22, 0,-45)
+  hospital.scale.set(0.3,0.3,0.3)
+  scene.add(hospital)
 })
+
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(3, 0,-10)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI
+  scene.add(a_house)
+})
+
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(8, 0,-10)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI
+  scene.add(a_house)
+})
+
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(3, 0,-2)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI / 90
+  scene.add(a_house)
+})
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(8, 0,-2)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI / 90
+  scene.add(a_house)
+})
+
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(23, 0,-10)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI
+  scene.add(a_house)
+})
+
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(28, 0,-10)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI
+  scene.add(a_house)
+})
+
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(23, 0,-2)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI / 90
+  scene.add(a_house)
+})
+loader.load('/models/american_house.glb', (gltf) => {
+  const a_house = gltf.scene
+  a_house.position.set(28, 0,-2)
+  a_house.scale.set(0.2,0.2,0.2)
+  a_house.rotation.y = Math.PI / 90
+  scene.add(a_house)
+})
+
+let clouds
+
+loader.load('/models/clouds.glb', (gltf) => {
+  clouds = gltf.scene
+
+  clouds.position.set(0, 20, -20) // tinggi di atas kota
+  clouds.scale.set(0.01,0.01,0.01)
+
+  scene.add(clouds)
+})
+
+if (clouds) {
+    clouds.position.x += 0.02
+
+    if (clouds.position.x > 50) {
+      clouds.position.x = -50
+    }
+  }
+
+function addRandomTreesToGreenArea(count) {
+  
+  for (let i = 0; i < count; i++) {
+    loader.load('/models/leaf_tree.glb', (gltf) => {
+      const tree = gltf.scene.clone();
+      
+      const randomX = Math.random() * 45 + 2; 
+      const randomZ = Math.random() * 45 - 47; 
+      
+      tree.position.set(randomX, 0, randomZ);
+      
+      const randomScale = Math.random() * 0.003 + 0.004;
+      tree.scale.set(4,4,4);
+
+      tree.rotation.y = Math.random() * Math.PI * 2;
+      
+      scene.add(tree);
+    });
+  }
+}
+
+addRandomTreesToGreenArea(10); 
 
 //END OF JEA
 
