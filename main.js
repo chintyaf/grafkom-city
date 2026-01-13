@@ -163,7 +163,14 @@ loader.load('/models/Building-bbH2Bg73qM.glb', (gltf) => {
 //END OF CHINTYA
 
 //NATALIE
-//KODE
+loader.load('/models/low_poly_city-pack.glb', (gltf) => {
+  const cityPack = gltf.scene
+  
+  cityPack.position.set(18.3, 0.015, 30.5)
+  cityPack.scale.set(0.1,0.1,0.1)
+  cityPack.rotation.y = Math.PI
+  scene.add(cityPack)
+})
 //END OF NATALIE
 
 //JEA
