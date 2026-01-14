@@ -1,51 +1,16 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 // const ground = new THREE.Mesh(
 //   new THREE.PlaneGeometry(98, 98),
 //   new THREE.MeshStandardMaterial({ color: 0xffffff })
 // )
-
-const canvas = document.createElement("canvas");
-canvas.width = 2;
-canvas.height = 2;
-
-// const ctx = canvas.getContext("2d");
-
-// const ctx = canvas.getContext('2d')
-
-// // kotak kiri atas
-// ctx.fillStyle = '#df2060ff' // merah
-// ctx.fillRect(0, 0, 1, 1)
-
-// // kanan atas
-// ctx.fillStyle = '#00ff00' // hijau
-// ctx.fillRect(1, 0, 1, 1)
-// // kotak kiri atas
-// ctx.fillStyle = "#df2060ff"; // merah
-// ctx.fillRect(0, 0, 1, 1);
-
-// // kanan atas
-// ctx.fillStyle = "#00ff00"; // hijau
-// ctx.fillRect(1, 0, 1, 1);
-
-// // kiri bawah
-// ctx.fillStyle = "#0000ff"; // biru
-// ctx.fillRect(0, 1, 1, 1);
-
-// // kiri bawah
-// ctx.fillStyle = '#4a4a4a' // biru > abu-abu base dasar
-// ctx.fillRect(0, 1, 1, 1)
-
-// // buat texture untuk Three.js
-// const texture = new THREE.CanvasTexture(canvas);
-// texture.magFilter = THREE.NearestFilter;
-// texture.minFilter = THREE.NearestFilter;
 
 const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(98, 98),
@@ -59,13 +24,22 @@ ground.receiveShadow = true;
 ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
 
+// const camera = new THREE.PerspectiveCamera(
+//     60,
+//     window.innerWidth / window.innerHeight,
+//     0.1,
+//     500
+// );
+// camera.position.set(-50, 20, -50);
+
 const camera = new THREE.PerspectiveCamera(
-    60,
+    75,
     window.innerWidth / window.innerHeight,
     0.1,
-    500
+    1000
 );
-camera.position.set(-50, 20, -50);
+camera.position.set(0, 1.3, 0);
+camera.lookAt(0, 1.3, -100);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -73,12 +47,21 @@ document.body.appendChild(renderer.domElement);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
+// const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enableDamping = true;
+
+/* 
+    Pointer Lock Controls (GPT)
+*/
+const controls = new PointerLockControls(camera, document.body);
+
+document.addEventListener('click', function () {
+    controls.lock();
+});
 
 /* 
 Lighting
- */
+*/
 
 // const hemisphere = new THREE.HemisphereLight(0x00ff00, 0x00ffff, 0.5);
 // hemisphere.position.set(0, 10, 0);
@@ -184,48 +167,48 @@ loader.load("models/Road Bits.glb", (gltf) => {
 // BRIGITTA
 
 loader.load('/models/Road Bits.glb', (gltf) => {
-  const roadBits = gltf.scene
-  const road_corner = gltf.scene.children[0].children.find(c => c.name === "road_corner");
-  const road_straight = gltf.scene.children[0].children.find(c => c.name === "road_straight");
-  const road_junction = gltf.scene.children[0].children.find(c => c.name === "road_junction");
-  const road_tsplit = gltf.scene.children[0].children.find(c => c.name === "road_tsplit");
+    const roadBits = gltf.scene
+    const road_corner = gltf.scene.children[0].children.find(c => c.name === "road_corner");
+    const road_straight = gltf.scene.children[0].children.find(c => c.name === "road_straight");
+    const road_junction = gltf.scene.children[0].children.find(c => c.name === "road_junction");
+    const road_tsplit = gltf.scene.children[0].children.find(c => c.name === "road_tsplit");
 
-  for (let z = 2; z <= 48; z += 2) {
-      const roadGrid1 = road_straight.clone();
-      roadGrid1.position.set(-15, 0, z);
-      scene.add(roadGrid1);
+    for (let z = 2; z <= 48; z += 2) {
+        const roadGrid1 = road_straight.clone();
+        roadGrid1.position.set(-15, 0, z);
+        scene.add(roadGrid1);
 
-      const roadGrid2 = road_straight.clone();
-      roadGrid2.position.set(-30, 0, z);
-      scene.add(roadGrid2);
-  }
+        const roadGrid2 = road_straight.clone();
+        roadGrid2.position.set(-30, 0, z);
+        scene.add(roadGrid2);
+    }
 
-  for (let x = -2; x >= -48; x -= 2) {
-      const roadGrid3 = road_straight.clone();
-      roadGrid3.position.set(x, 0, 15);
-      roadGrid3.rotation.z = Math.PI / 2;
-      scene.add(roadGrid3);
+    for (let x = -2; x >= -48; x -= 2) {
+        const roadGrid3 = road_straight.clone();
+        roadGrid3.position.set(x, 0, 15);
+        roadGrid3.rotation.z = Math.PI / 2;
+        scene.add(roadGrid3);
 
-      const roadGrid4 = road_straight.clone();
-      roadGrid4.position.set(x, 0, 30);
-      roadGrid4.rotation.z = Math.PI / 2;
-      scene.add(roadGrid4);
-  }
+        const roadGrid4 = road_straight.clone();
+        roadGrid4.position.set(x, 0, 30);
+        roadGrid4.rotation.z = Math.PI / 2;
+        scene.add(roadGrid4);
+    }
 
-  const centerJunction = road_junction.clone();
-  centerJunction.position.set(0, 0, 0);
-  scene.add(centerJunction);
+    const centerJunction = road_junction.clone();
+    centerJunction.position.set(0, 0, 0);
+    scene.add(centerJunction);
 
-  const junctions = [
-      [-15, 15], [-30, 15], [-15, 30], [-30, 30], 
-      [-15, 0], [-30, 0], [0, 15], [0, 30] 
-  ];
+    const junctions = [
+        [-15, 15], [-30, 15], [-15, 30], [-30, 30], 
+        [-15, 0], [-30, 0], [0, 15], [0, 30] 
+    ];
 
-  junctions.forEach(pos => {
-      const junc = road_junction.clone();
-      junc.position.set(pos[0], 0, pos[1]);
-      scene.add(junc);
-  });
+    junctions.forEach(pos => {
+        const junc = road_junction.clone();
+        junc.position.set(pos[0], 0, pos[1]);
+        scene.add(junc);
+    });
 })
 
 // BLOK 1: X=[-2 to -13], Z=[2 to 13]
@@ -1109,7 +1092,7 @@ loader.load("/models/Cloud.glb", (gltf) => {
 // Center (-25, -25)
 
 // HAPUS : change the position for the controls
-controls.target.set(-25, 0, -25);
+// controls.target.set(-25, 0, -25);
 
 /* --- GRASS */
 const textureLoader = new THREE.TextureLoader();
@@ -1423,8 +1406,8 @@ END OF CHINTYA
 loader.load("/models/low_poly_city-pack.glb", (gltf) => {
     const cityPack = gltf.scene;
 
-    cityPack.position.set(18.3, 0.015, 30.5);
-    cityPack.scale.set(0.1, 0.1, 0.1);
+    cityPack.position.set(19, 0.008, 29.5);
+    cityPack.scale.set(0.107, 0.12, 0.095);
     cityPack.rotation.y = Math.PI;
     scene.add(cityPack);
 });
@@ -1433,123 +1416,123 @@ loader.load("/models/low_poly_city-pack.glb", (gltf) => {
 //JEA
 //KODE
 const apartmentPositions = [
-  { x:7, z: -39, rotation: Math.PI / 2},
-  ]
+    { x:7, z: -39, rotation: Math.PI / 2},
+    ]
 
-loader.load('/models/apartment_building.glb', (gltf) => {
-  apartmentPositions.forEach(pos => {
-    const apartment = gltf.scene.clone();
-    apartment.position.set(pos.x, 0, pos.z);
-    apartment.scale.set(0.008, 0.008, 0.008);
-    apartment.rotation.y = pos.rotation;
-    scene.add(apartment);
-  })  
+    loader.load('/models/apartment_building.glb', (gltf) => {
+    apartmentPositions.forEach(pos => {
+        const apartment = gltf.scene.clone();
+        apartment.position.set(pos.x, 0, pos.z);
+        apartment.scale.set(0.008, 0.008, 0.008);
+        apartment.rotation.y = pos.rotation;
+        scene.add(apartment);
+    })  
 });
 
 
 const oldResidentialPositions = [
-  { x: 34, z: -36},
-  { x: 38, z: -36}
-  ];
+{ x: 34, z: -36},
+{ x: 38, z: -36}
+];
 
 loader.load('/models/old_residential_building.glb', (gltf) => {
-  oldResidentialPositions.forEach(pos => {
+oldResidentialPositions.forEach(pos => {
     const old_resident = gltf.scene.clone();
     old_resident.position.set(pos.x, 0, pos.z);
     old_resident.scale.set(0.4, 0.4, 0.4);
     scene.add(old_resident);
-  })  
+})  
 });
 
 const samRestPositions = [
-  { x: 5, z: -22, rotation: Math.PI },
-  { x: 5, z: -19, rotation: Math.PI/90}
-  ];
+{ x: 5, z: -22, rotation: Math.PI },
+{ x: 5, z: -19, rotation: Math.PI/90}
+];
 
 loader.load('/models/samhui_restaurant.glb', (gltf) => {
-  samRestPositions.forEach(pos => {
+samRestPositions.forEach(pos => {
     const sam_rest = gltf.scene.clone();
     sam_rest.position.set(pos.x, 0, pos.z);
     sam_rest.scale.set(0.4, 0.4, 0.4);
     sam_rest.rotation.y = pos.rotation;
     scene.add(sam_rest);
-  });
+});
 });
 
 loader.load('/models/albaik_restaurant.glb', (gltf) => {
-  const albaik = gltf.scene
-  albaik.position.set(10, 0,-20)
-  albaik.scale.set(0.6,0.6,0.6)
-  scene.add(albaik)
+const albaik = gltf.scene
+albaik.position.set(10, 0,-20)
+albaik.scale.set(0.6,0.6,0.6)
+scene.add(albaik)
 })
 
 const kyotoRestPositions = [
-  { x: 20, z: -17},
-  { x: 24, z: -17}
-  ];
+{ x: 20, z: -17},
+{ x: 24, z: -17}
+];
 
 loader.load('/models/kyoto_restaurant.glb', (gltf) => {
-  kyotoRestPositions.forEach(pos => {
+kyotoRestPositions.forEach(pos => {
     const kyoto = gltf.scene.clone();
     kyoto.position.set(pos.x, 0, pos.z);
     kyoto.scale.set(0.004, 0.004, 0.004);
     scene.add(kyoto);
-  })  
+})  
 });
 
 const RestPositions = [
-  { x: 22, z: -20},
-  { x: 26, z: -20}
-  ];
+{ x: 22, z: -20},
+{ x: 26, z: -20}
+];
 
 loader.load('/models/restaurant.glb', (gltf) => {  
-  RestPositions.forEach(pos => {
+RestPositions.forEach(pos => {
     const restaurant = gltf.scene.clone();
     restaurant.position.set(pos.x, 0, pos.z);
     restaurant.scale.set(3,3,3);
     scene.add(restaurant);
-  })  
+})  
 });
 
 
 loader.load('/models/city_park_at_sunset.glb', (gltf) => {
-  const park = gltf.scene
-  park.position.set(40, 0,-21)
-  park.scale.set(0.2,0.2,0.2)
-  scene.add(park)
+const park = gltf.scene
+park.position.set(40, 0,-21)
+park.scale.set(0.2,0.2,0.2)
+scene.add(park)
 })
 
 loader.load('/models/hospital.glb', (gltf) => {
-  const hospital = gltf.scene
-  hospital.position.set(23, 0,-39)
-  hospital.scale.set(0.4,0.4,0.4)
-  scene.add(hospital)
+const hospital = gltf.scene
+hospital.position.set(23, 0,-39)
+hospital.scale.set(0.4,0.4,0.4)
+scene.add(hospital)
 })
 
 // Array berisi posisi dan rotasi untuk setiap rumah
 const housePositions = [
-  { x: 4, z: -10, rotation: Math.PI },
-  { x: 9, z: -10, rotation: Math.PI },
-  { x: 4, z: -2, rotation: Math.PI / 90 },
-  { x: 9, z: -2, rotation: Math.PI / 90 },
-  { x: 20, z: -10, rotation: Math.PI },
-  { x: 25, z: -10, rotation: Math.PI },
-  { x: 20, z: -2, rotation: Math.PI /90 },
-  { x: 25, z: -2, rotation: Math.PI / 90 },
-  { x: 37, z: -2, rotation: Math.PI / 90 },
-  { x: 42, z: -10, rotation: Math.PI},
-  { x: 37, z: -10, rotation: Math.PI},
-  { x: 42, z: -2, rotation: Math.PI / 90 }
+{ x: 4, z: -10, rotation: Math.PI },
+{ x: 9, z: -10, rotation: Math.PI },
+{ x: 4, z: -2, rotation: Math.PI / 90 },
+{ x: 9, z: -2, rotation: Math.PI / 90 },
+{ x: 20, z: -10, rotation: Math.PI },
+{ x: 25, z: -10, rotation: Math.PI },
+{ x: 20, z: -2, rotation: Math.PI /90 },
+{ x: 25, z: -2, rotation: Math.PI / 90 },
+{ x: 37, z: -2, rotation: Math.PI / 90 },
+{ x: 42, z: -10, rotation: Math.PI},
+{ x: 37, z: -10, rotation: Math.PI},
+{ x: 42, z: -2, rotation: Math.PI / 90 }
 ];
 
 loader.load('/models/american_house.glb', (gltf) => {
-  housePositions.forEach(pos => {
+housePositions.forEach(pos => {
     const a_house = gltf.scene.clone();
     a_house.position.set(pos.x, 0, pos.z);
     a_house.scale.set(0.2, 0.2, 0.2);
     a_house.rotation.y = pos.rotation;
     scene.add(a_house);
-  });
+});
 });
 
 // ===============================
@@ -1557,86 +1540,112 @@ loader.load('/models/american_house.glb', (gltf) => {
 // ===============================
 
 loader.load('/models/Road Bits.glb', (gltf) => {
-  const root = gltf.scene.children[0]
+const root = gltf.scene.children[0]
 
-  const road_straight = root.children.find(
+const road_straight = root.children.find(
     c => c.name === 'road_straight'
-  )
+)
 
-  if (!road_straight) {
+if (!road_straight) {
     console.error('road_straight tidak ditemukan')
     return
-  }
+}
 
-  // =========================
-  // JALAN LURUS KE BELAKANG
-  // r1 - r16
-  // =========================
-  for (let i = 0; i <= 24; i++) {
+// =========================
+// JALAN LURUS KE BELAKANG
+// r1 - r16
+// =========================
+for (let i = 0; i <= 24; i++) {
     const road = road_straight.clone()
     road.position.set(14, 0.01, -i * 2)
     scene.add(road)
-  }
+}
 
-  // =========================
-  // JALAN KE KIRI (Z = -30)
-  // r17 - r40
-  // =========================
-  for (let i = 0; i <= 24; i++) {
+// =========================
+// JALAN KE KIRI (Z = -30)
+// r17 - r40
+// =========================
+for (let i = 0; i <= 24; i++) {
     const road = road_straight.clone()
     road.position.set(48 - i * 2, 0.01, -30)
     road.rotation.z = Math.PI / 2
     scene.add(road)
-  }
+}
 
-  // =========================
-  // JALAN KE KIRI 
-  // r41 - r48
-  // =========================
-  for (let i = 0; i <= 24; i++) {
+// =========================
+// JALAN KE KIRI 
+// r41 - r48
+// =========================
+for (let i = 0; i <= 24; i++) {
     const road = road_straight.clone()
     road.position.set(48 - i * 2, 0.01, -13)
     road.rotation.z = Math.PI / 2
     scene.add(road)
-  }
+}
 
     // =========================
-  // JALAN KE KIRI 
-  // r41 - r48
-  // =========================
-  for (let i = 0; i <= 24; i++) {
+// JALAN KE KIRI 
+// r41 - r48
+// =========================
+for (let i = 0; i <= 24; i++) {
     const road = road_straight.clone()
     road.position.set(48 - i * 2, 0.01, -48)
     road.rotation.z = Math.PI / 2
     scene.add(road)
-  }
+}
 
-  // =========================
-  // JALAN LURUS KE BELAKANG
-  // r1 - r16
-  // =========================
-  for (let i = 0; i <= 24; i++) {
+// =========================
+// JALAN LURUS KE BELAKANG
+// r1 - r16
+// =========================
+for (let i = 0; i <= 24; i++) {
     const road = road_straight.clone()
     road.position.set(32, 0.01, -i * 2)
     scene.add(road)
-  }
+}
 
     // =========================
-  // JALAN LURUS KE BELAKANG
-  // r1 - r16
-  // =========================
-  for (let i = 0; i <= 24; i++) {
+// JALAN LURUS KE BELAKANG
+// r1 - r16
+// =========================
+for (let i = 0; i <= 24; i++) {
     const road = road_straight.clone()
     road.position.set(48, 0.01, -i * 2)
     scene.add(road)
-  }
+}
 
 })
-
-
 //END OF JEA
 
-controls.target.set(0, 0, 0);
+// controls.target.set(0, 0, 0);
+
+// Variabel kontrol gerak
+let moveForward = false;
+let moveBackward = false;
+let moveLeft = false;
+let moveRight = false;
+
+// Event Listener Keyboard (WASD)
+const onKeyDown = function (event) {
+    switch (event.code) {
+        case 'KeyW': moveForward = true; break;
+        case 'KeyA': moveLeft = true; break;
+        case 'KeyS': moveBackward = true; break;
+        case 'KeyD': moveRight = true; break;
+    }
+};
+
+const onKeyUp = function (event) {
+    switch (event.code) {
+        case 'KeyW': moveForward = false; break;
+        case 'KeyA': moveLeft = false; break;
+        case 'KeyS': moveBackward = false; break;
+        case 'KeyD': moveRight = false; break;
+    }
+};
+
+document.addEventListener('keydown', onKeyDown);
+document.addEventListener('keyup', onKeyUp);
 
 // CAR
 let cars = [];
@@ -1731,6 +1740,22 @@ function animate() {
             }
         }
     }
+
+    if (controls.isLocked) {
+        const speed = 0.2; // Atur kecepatan jalan di sini
+
+        // Logika Move:
+        // moveForward(positif) = Maju
+        // moveForward(negatif) = Mundur
+        // moveRight(positif)   = Kanan
+        // moveRight(negatif)   = Kiri
+        
+        if (moveForward) controls.moveForward(speed);
+        if (moveBackward) controls.moveForward(-speed);
+        if (moveRight) controls.moveRight(speed);
+        if (moveLeft) controls.moveRight(-speed);
+    }
+
 
     requestAnimationFrame(animate);
     controls.update();
