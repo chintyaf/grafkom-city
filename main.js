@@ -1436,50 +1436,23 @@ loader.load("/models/low_poly_city-pack.glb", (gltf) => {
 //JEA
 //KODE
 const apartmentPositions = [
-  { x: 5, z: -45},
-  { x: 10, z: -45}
-  ];
+  { x:7, z: -39, rotation: Math.PI / 2},
+  ]
 
 loader.load('/models/apartment_building.glb', (gltf) => {
   apartmentPositions.forEach(pos => {
     const apartment = gltf.scene.clone();
     apartment.position.set(pos.x, 0, pos.z);
-    apartment.scale.set(0.007, 0.007, 0.007);
+    apartment.scale.set(0.008, 0.008, 0.008);
+    apartment.rotation.y = pos.rotation;
     scene.add(apartment);
   })  
 });
 
-const bakeryPositions = [
-  { x: 17, z: -45},
-  { x: 18, z: -45}
-  ];
-
-loader.load('/models/bakery.glb', (gltf) => {
-  bakeryPositions.forEach(pos => {
-    const bakery = gltf.scene.clone();
-    bakery.position.set(pos.x, 0, pos.z);
-    bakery.scale.set(0.03, 0.03, 0.03);
-    scene.add(bakery);
-  })  
-});
-
-const oldBuildingPositions = [
-  { x: 31, z: -45},
-  { x: 33, z: -45}
-  ];
-
-loader.load('/models/old_building.glb', (gltf) => {
-  oldBuildingPositions.forEach(pos => {
-    const old_building = gltf.scene.clone();
-    old_building.position.set(pos.x, 0, pos.z);
-    old_building.scale.set(0.007, 0.007, 0.007);
-    scene.add(old_building);
-  })  
-});
 
 const oldResidentialPositions = [
-  { x: 36, z: -45},
-  { x: 40, z: -45}
+  { x: 34, z: -36},
+  { x: 38, z: -36}
   ];
 
 loader.load('/models/old_residential_building.glb', (gltf) => {
@@ -1491,16 +1464,9 @@ loader.load('/models/old_residential_building.glb', (gltf) => {
   })  
 });
 
-loader.load('/models/bakery.glb', (gltf) => {
-  const bakery = gltf.scene
-  bakery.position.set(15, 0,-45)
-  bakery.scale.set(0.4,0.4,0.4)
-  scene.add(bakery)
-})
-
 const samRestPositions = [
-  { x: 5, z: -20, rotation: Math.PI },
-  { x: 5, z: -17, rotation: Math.PI/90}
+  { x: 5, z: -22, rotation: Math.PI },
+  { x: 5, z: -19, rotation: Math.PI/90}
   ];
 
 loader.load('/models/samhui_restaurant.glb', (gltf) => {
@@ -1515,14 +1481,14 @@ loader.load('/models/samhui_restaurant.glb', (gltf) => {
 
 loader.load('/models/albaik_restaurant.glb', (gltf) => {
   const albaik = gltf.scene
-  albaik.position.set(10, 0,-19)
+  albaik.position.set(10, 0,-20)
   albaik.scale.set(0.6,0.6,0.6)
   scene.add(albaik)
 })
 
 const kyotoRestPositions = [
-  { x: 20, z: -15},
-  { x: 24, z: -15}
+  { x: 20, z: -17},
+  { x: 24, z: -17}
   ];
 
 loader.load('/models/kyoto_restaurant.glb', (gltf) => {
@@ -1535,8 +1501,8 @@ loader.load('/models/kyoto_restaurant.glb', (gltf) => {
 });
 
 const RestPositions = [
-  { x: 22, z: -19},
-  { x: 26, z: -19}
+  { x: 22, z: -20},
+  { x: 26, z: -20}
   ];
 
 loader.load('/models/restaurant.glb', (gltf) => {  
@@ -1548,44 +1514,34 @@ loader.load('/models/restaurant.glb', (gltf) => {
   })  
 });
 
-const sevelPositions = [
-  { x: 34, z: -17},
-  { x: 37, z: -17}
-  ];
-
-loader.load('/models/7_eleven.glb', (gltf) => {  
-  sevelPositions.forEach(pos => {
-    const sevel = gltf.scene.clone();
-    sevel.position.set(pos.x, 0, pos.z);
-    sevel.scale.set(0.5,0.5,0.5);
-    scene.add(sevel);
-  })  
-});
 
 loader.load('/models/city_park_at_sunset.glb', (gltf) => {
-  const school = gltf.scene
-  school.position.set(43, 0,-20)
-  school.scale.set(0.2,0.2,0.2)
-
-  scene.add(school)
+  const park = gltf.scene
+  park.position.set(40, 0,-21)
+  park.scale.set(0.2,0.2,0.2)
+  scene.add(park)
 })
 
 loader.load('/models/hospital.glb', (gltf) => {
   const hospital = gltf.scene
-  hospital.position.set(23, 0,-45)
+  hospital.position.set(23, 0,-39)
   hospital.scale.set(0.4,0.4,0.4)
   scene.add(hospital)
 })
 
 // Array berisi posisi dan rotasi untuk setiap rumah
 const housePositions = [
-  { x: 3, z: -10, rotation: Math.PI },
-  { x: 8, z: -10, rotation: Math.PI },
-  { x: 3, z: -2, rotation: Math.PI / 90 },
-  { x: 8, z: -2, rotation: Math.PI / 90 },
+  { x: 4, z: -10, rotation: Math.PI },
+  { x: 9, z: -10, rotation: Math.PI },
+  { x: 4, z: -2, rotation: Math.PI / 90 },
+  { x: 9, z: -2, rotation: Math.PI / 90 },
   { x: 20, z: -10, rotation: Math.PI },
   { x: 25, z: -10, rotation: Math.PI },
+  { x: 20, z: -2, rotation: Math.PI /90 },
+  { x: 25, z: -2, rotation: Math.PI / 90 },
   { x: 37, z: -2, rotation: Math.PI / 90 },
+  { x: 42, z: -10, rotation: Math.PI},
+  { x: 37, z: -10, rotation: Math.PI},
   { x: 42, z: -2, rotation: Math.PI / 90 }
 ];
 
@@ -1599,85 +1555,87 @@ loader.load('/models/american_house.glb', (gltf) => {
   });
 });
 
-// =====================
-// JEA - JALAN & PEREMPATAN -- GPT
-// =====================
+// ===============================
+// JEA - ROAD SYSTEM (FULL)
+// ===============================
+
 loader.load('/models/Road Bits.glb', (gltf) => {
   const root = gltf.scene.children[0]
 
-  const roadStraight = root.children.find(c => c.name === 'road_straight')
-  const roadJunction = root.children.find(c => c.name === 'road_junction')
+  const road_straight = root.children.find(
+    c => c.name === 'road_straight'
+  )
 
-  if (!roadStraight || !roadJunction) {
-    console.error('Road mesh tidak ditemukan')
+  if (!road_straight) {
+    console.error('road_straight tidak ditemukan')
     return
   }
 
-  // ===== JALAN VERTIKAL =====
-  for (let i = -24; i <= 24; i++) {
-    const road = roadStraight.clone()
-    road.position.set(0, 0.01, i * 2)
+  // =========================
+  // JALAN LURUS KE BELAKANG
+  // r1 - r16
+  // =========================
+  for (let i = 0; i <= 24; i++) {
+    const road = road_straight.clone()
+    road.position.set(14, 0.01, -i * 2)
     scene.add(road)
   }
 
-  // ===== JALAN HORIZONTAL =====
-  for (let i = -24; i <= 24; i++) {
-    const road = roadStraight.clone()
-    road.position.set(i * 2, 0.01, 0)
+  // =========================
+  // JALAN KE KIRI (Z = -30)
+  // r17 - r40
+  // =========================
+  for (let i = 0; i <= 24; i++) {
+    const road = road_straight.clone()
+    road.position.set(48 - i * 2, 0.01, -30)
     road.rotation.z = Math.PI / 2
     scene.add(road)
   }
 
-  // ===== PEREMPATAN =====
-  const cross = roadJunction.clone()
-  cross.position.set(0, 0.01, 0)
-  cross.position.set(20, 0.01, -30)
-  cross.position.set(20, 0.01, -30)
+  // =========================
+  // JALAN KE KIRI 
+  // r41 - r48
+  // =========================
+  for (let i = 0; i <= 24; i++) {
+    const road = road_straight.clone()
+    road.position.set(48 - i * 2, 0.01, -13)
+    road.rotation.z = Math.PI / 2
+    scene.add(road)
+  }
 
-  scene.add(cross)
+    // =========================
+  // JALAN KE KIRI 
+  // r41 - r48
+  // =========================
+  for (let i = 0; i <= 24; i++) {
+    const road = road_straight.clone()
+    road.position.set(48 - i * 2, 0.01, -48)
+    road.rotation.z = Math.PI / 2
+    scene.add(road)
+  }
+
+  // =========================
+  // JALAN LURUS KE BELAKANG
+  // r1 - r16
+  // =========================
+  for (let i = 0; i <= 24; i++) {
+    const road = road_straight.clone()
+    road.position.set(32, 0.01, -i * 2)
+    scene.add(road)
+  }
+
+    // =========================
+  // JALAN LURUS KE BELAKANG
+  // r1 - r16
+  // =========================
+  for (let i = 0; i <= 24; i++) {
+    const road = road_straight.clone()
+    road.position.set(48, 0.01, -i * 2)
+    scene.add(road)
+  }
+
 })
 
-
-// let clouds
-
-// loader.load('/models/clouds.glb', (gltf) => {
-//   clouds = gltf.scene
-
-//   clouds.position.set(0, 20, -20) // tinggi di atas kota
-//   clouds.scale.set(0.01,0.01,0.01)
-
-//   scene.add(clouds)
-// })
-
-// if (clouds) {
-//     clouds.position.x += 0.02
-
-//     if (clouds.position.x > 50) {
-//       clouds.position.x = -50
-//     }
-//   }
-
-function addRandomTreesToGreenArea(count) {
-  
-  for (let i = 0; i < count; i++) {
-    loader.load('/models/leaf_tree.glb', (gltf) => {
-      const tree = gltf.scene.clone();
-      
-      const randomX = Math.random() * 45 + 2; 
-      const randomZ = Math.random() * 45 - 47; 
-      
-      tree.position.set(randomX, 0, randomZ);
-      
-      const randomScale = Math.random() * 0.003 + 0.004;
-      tree.scale.set(3,3,3);
-
-      tree.rotation.y = Math.random() * Math.PI * 2;
-      
-      scene.add(tree);
-    });
-  }
-}
-addRandomTreesToGreenArea(10);
 
 //END OF JEA
 
