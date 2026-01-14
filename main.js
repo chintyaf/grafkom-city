@@ -15,7 +15,7 @@ const canvas = document.createElement("canvas");
 canvas.width = 2;
 canvas.height = 2;
 
-const ctx = canvas.getContext("2d");
+// const ctx = canvas.getContext("2d");
 
 // const ctx = canvas.getContext('2d')
 
@@ -117,10 +117,7 @@ sun.shadow.camera.right = 50;
 sun.shadow.camera.top = 100;
 sun.shadow.camera.bottom = -50;
 
-scene.add(sun.target);
 scene.add(sun);
-scene.add(new THREE.DirectionalLightHelper(sun));
-// scene.add(new THREE.CameraHelper(sun.shadow.camera));
 
 const loader = new GLTFLoader();
 
@@ -128,14 +125,14 @@ loader.load("models/Road Bits.glb", (gltf) => {
     const roadBits = gltf.scene;
     roadBits.position.set(0, 0, 0);
     // scene.add(roadBits)
-    gltf.scene.children.forEach((child, index) => {
-        console.log(`Index ${index}: ${child.name}`);
-        console.log("makan nasi", child.children);
-        console.log(
-            "makan nasi",
-            child.children.find((c) => c.name === "road_corner")
-        );
-    });
+    // gltf.scene.children.forEach((child, index) => {
+    //     console.log(`Index ${index}: ${child.name}`);
+    //     console.log("makan nasi", child.children);
+    //     console.log(
+    //         "makan nasi",
+    //         child.children.find((c) => c.name === "road_corner")
+    //     );
+    // });
     const road_corner = gltf.scene.children[0].children.find(
         (c) => c.name === "road_corner"
     );
@@ -181,7 +178,7 @@ loader.load("models/Road Bits.glb", (gltf) => {
     road_pinggirbelok.position.set(22, 0, 0);
     road_pinggirbelok.rotation.z = -Math.PI / 2;
     scene.add(road_pinggirbelok);
-    console.log(road_pinggirbelok);
+    // console.log(road_pinggirbelok);
 });
 
 // BRIGITTA
@@ -485,14 +482,14 @@ loader.load('models/Bush.glb', (gltf) => {
     }
 })
 
-loader.load('models/Trees.glb', (gltf) => {
-    for(let z=6; z<48; z+=12){
-        const tree = gltf.scene.clone()
-        tree.position.set(-3, 0, z)
-        tree.scale.set(1.2, 1.2, 1.2)
-        scene.add(tree)
-    }
-})
+// loader.load('models/Trees.glb', (gltf) => {
+//     for(let z=6; z<48; z+=12){
+//         const tree = gltf.scene.clone()
+//         tree.position.set(-3, 0, z)
+//         tree.scale.set(1.2, 1.2, 1.2)
+//         scene.add(tree)
+//     }
+// })
 
 loader.load('models/Taxi.glb', (gltf) => {
     const taxi1 = gltf.scene.clone()
@@ -1120,7 +1117,7 @@ const grass_color = textureLoader.load(
     "/textures/Grass005/Grass005_4K-JPG_Color.jpg"
 );
 
-console.log("grass", grass_color);
+// console.log("grass", grass_color);
 
 const grass_normal = textureLoader.load(
     "/textures/Grass005/Grass005_4K-JPG_NormalGL.jpg"
