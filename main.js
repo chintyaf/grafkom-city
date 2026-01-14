@@ -88,7 +88,7 @@ scene.add(hemi);
 const geometry = new THREE.SphereGeometry(5, 15, 16);
 const material = new THREE.MeshBasicMaterial({ color: 0xfcfce6 });
 const sun_mesh = new THREE.Mesh(geometry, material);
-sun_mesh.position.set(0, 100,0)
+sun_mesh.position.set(0, 100, 0);
 scene.add(sun_mesh);
 
 const sun = new THREE.DirectionalLight(0xfcfbe6, 0.5);
@@ -111,7 +111,7 @@ sun.shadow.camera.bottom = -50;
 scene.add(sun.target);
 scene.add(sun);
 scene.add(new THREE.DirectionalLightHelper(sun));
-scene.add(new THREE.CameraHelper(sun.shadow.camera));
+// scene.add(new THREE.CameraHelper(sun.shadow.camera));
 
 const loader = new GLTFLoader();
 
@@ -182,11 +182,11 @@ loader.load("/models/Traffic light.glb", (gltf) => {
     scene.add(traffic);
 });
 
-loader.load("/models/Taxi.glb", (gltf) => {
-    const taxi = gltf.scene;
-    taxi.position.set(0, 0, 5);
-    scene.add(taxi);
-});
+// loader.load("/models/Taxi.glb", (gltf) => {
+//     const taxi = gltf.scene;
+//     taxi.position.set(0, 0, 5);
+//     scene.add(taxi);
+// });
 
 loader.load("/models/Stationwagon.glb", (gltf) => {
     const car = gltf.scene;
@@ -235,17 +235,6 @@ loader.load("/models/Cloud.glb", (gltf) => {
     scene.add(cloud);
 });
 
-const c_basePlane = new THREE.Mesh(
-    new THREE.PlaneGeometry(48, 48, 1),
-    new THREE.MeshLambertMaterial({ color: 0xa3a3a3 })
-);
-
-// c_basePlane.position.set(-25, 0.1, -25);
-// c_basePlane.rotation.x = -Math.PI / 2;
-// c_basePlane.receiveShadow = true;
-// c_basePlane.castShadow = true;
-// scene.add(c_basePlane);
-
 // Kiri Atas (-48, -48)
 // Kanan Atas (-2, -48)
 
@@ -293,6 +282,16 @@ c_meshParkGrass.rotation.x = -Math.PI / 2;
 c_meshParkGrass.receiveShadow = true;
 c_meshParkGrass.castShadow = true;
 scene.add(c_meshParkGrass);
+
+const c_basePlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(48, 48, 1),
+    c_matParkGrass
+);
+c_basePlane.position.set(-25, 0.05, -25);
+c_basePlane.rotation.x = -Math.PI / 2;
+c_basePlane.receiveShadow = true;
+c_basePlane.castShadow = true;
+scene.add(c_basePlane);
 
 const c_parkExtPath = new THREE.Mesh(
     new THREE.BoxGeometry(32, 0.5, 32),
@@ -502,7 +501,7 @@ loader.load("models/Road Bits.glb", (gltf) => {
     }
 });
 
-let buildings = [];
+// let buildings = [];
 loader.load("/models/Building B.glb", (gltf) => {
     const model = gltf.scene;
     for (let i = 0; i <= 6; i++) {
@@ -515,7 +514,7 @@ loader.load("/models/Building B.glb", (gltf) => {
                 obj.receiveShadow = true;
             }
         });
-        buildings.push([-40 + i * 5, 0, -46]);
+        // buildings.push([-40 + i * 5, 0, -46]);
         scene.add(building);
     }
 
@@ -530,7 +529,7 @@ loader.load("/models/Building B.glb", (gltf) => {
                 obj.receiveShadow = true;
             }
         });
-        buildings.push([-46, 0, -39 + i * 5]);
+        // buildings.push([-46, 0, -39 + i * 5]);
         scene.add(building);
     }
 
@@ -545,176 +544,264 @@ loader.load("/models/Building B.glb", (gltf) => {
                 obj.receiveShadow = true;
             }
         });
-        buildings.push([-4, 0, -39 + i * 5]);
+        // buildings.push([-4, 0, -39 + i * 5]);
         scene.add(building);
     }
-    console.log(buildings);
+    // console.log(buildings);
 });
 
 /*
 END OF CHINTYA
 */
 
-//NATALIE
-loader.load('/models/low_poly_city-pack.glb', (gltf) => {
-  const cityPack = gltf.scene
-  
-  cityPack.position.set(18.3, 0.015, 30.5)
-  cityPack.scale.set(0.1,0.1,0.1)
-  cityPack.rotation.y = Math.PI
-  scene.add(cityPack)
-})
-//END OF NATALIE
+// NATALIE
+loader.load("/models/low_poly_city-pack.glb", (gltf) => {
+    const cityPack = gltf.scene;
+
+    cityPack.position.set(18.3, 0.015, 30.5);
+    cityPack.scale.set(0.1, 0.1, 0.1);
+    cityPack.rotation.y = Math.PI;
+    scene.add(cityPack);
+});
+// END OF NATALIE
 
 //JEA
 //KODE
-loader.load('/models/apartment_building.glb', (gltf) => {
-  const apartment = gltf.scene
-  apartment.position.set(5, 0,-45)
-  apartment.scale.set(0.005,0.005,0.005)
-  scene.add(apartment)
-})
-loader.load('/models/apartment_building.glb', (gltf) => {
-  const apartment = gltf.scene
-  apartment.position.set(10, 0,-45)
-  apartment.scale.set(0.005,0.005,0.005)
-  scene.add(apartment)
-})
+loader.load("/models/apartment_building.glb", (gltf) => {
+    const apartment = gltf.scene;
+    apartment.position.set(5, 0, -45);
+    apartment.scale.set(0.005, 0.005, 0.005);
+    scene.add(apartment);
+});
+loader.load("/models/apartment_building.glb", (gltf) => {
+    const apartment = gltf.scene;
+    apartment.position.set(10, 0, -45);
+    apartment.scale.set(0.005, 0.005, 0.005);
+    scene.add(apartment);
+});
 
-loader.load('/models/bakery.glb', (gltf) => {
-  const bakery = gltf.scene
-  bakery.position.set(14, 0,-45)
-  bakery.scale.set(0.3,0.3,0.3)
-  scene.add(bakery)
-})
+loader.load("/models/bakery.glb", (gltf) => {
+    const bakery = gltf.scene;
+    bakery.position.set(14, 0, -45);
+    bakery.scale.set(0.3, 0.3, 0.3);
+    scene.add(bakery);
+});
 
-loader.load('/models/bakery.glb', (gltf) => {
-  const bakery = gltf.scene
-  bakery.position.set(15, 0,-45)
-  bakery.scale.set(0.3,0.3,0.3)
-  scene.add(bakery)
-})
+loader.load("/models/bakery.glb", (gltf) => {
+    const bakery = gltf.scene;
+    bakery.position.set(15, 0, -45);
+    bakery.scale.set(0.3, 0.3, 0.3);
+    scene.add(bakery);
+});
 
-loader.load('/models/hospital.glb', (gltf) => {
-  const hospital = gltf.scene
-  hospital.position.set(22, 0,-45)
-  hospital.scale.set(0.3,0.3,0.3)
-  scene.add(hospital)
-})
+loader.load("/models/hospital.glb", (gltf) => {
+    const hospital = gltf.scene;
+    hospital.position.set(22, 0, -45);
+    hospital.scale.set(0.3, 0.3, 0.3);
+    scene.add(hospital);
+});
 
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(3, 0,-10)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI
-  scene.add(a_house)
-})
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(3, 0, -10);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI;
+    scene.add(a_house);
+});
 
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(8, 0,-10)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI
-  scene.add(a_house)
-})
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(8, 0, -10);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI;
+    scene.add(a_house);
+});
 
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(3, 0,-2)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI / 90
-  scene.add(a_house)
-})
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(8, 0,-2)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI / 90
-  scene.add(a_house)
-})
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(3, 0, -2);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI / 90;
+    scene.add(a_house);
+});
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(8, 0, -2);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI / 90;
+    scene.add(a_house);
+});
 
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(23, 0,-10)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI
-  scene.add(a_house)
-})
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(23, 0, -10);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI;
+    scene.add(a_house);
+});
 
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(28, 0,-10)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI
-  scene.add(a_house)
-})
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(28, 0, -10);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI;
+    scene.add(a_house);
+});
 
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(23, 0,-2)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI / 90
-  scene.add(a_house)
-})
-loader.load('/models/american_house.glb', (gltf) => {
-  const a_house = gltf.scene
-  a_house.position.set(28, 0,-2)
-  a_house.scale.set(0.2,0.2,0.2)
-  a_house.rotation.y = Math.PI / 90
-  scene.add(a_house)
-})
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(23, 0, -2);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI / 90;
+    scene.add(a_house);
+});
+loader.load("/models/american_house.glb", (gltf) => {
+    const a_house = gltf.scene;
+    a_house.position.set(28, 0, -2);
+    a_house.scale.set(0.2, 0.2, 0.2);
+    a_house.rotation.y = Math.PI / 90;
+    scene.add(a_house);
+});
 
-let clouds
+let clouds;
 
-loader.load('/models/clouds.glb', (gltf) => {
-  clouds = gltf.scene
+loader.load("/models/clouds.glb", (gltf) => {
+    clouds = gltf.scene;
 
-  clouds.position.set(0, 20, -20) // tinggi di atas kota
-  clouds.scale.set(0.01,0.01,0.01)
+    clouds.position.set(0, 20, -20); // tinggi di atas kota
+    clouds.scale.set(0.01, 0.01, 0.01);
 
-  scene.add(clouds)
-})
+    scene.add(clouds);
+});
 
 if (clouds) {
-    clouds.position.x += 0.02
+    clouds.position.x += 0.02;
 
     if (clouds.position.x > 50) {
-      clouds.position.x = -50
+        clouds.position.x = -50;
     }
-  }
-
-function addRandomTreesToGreenArea(count) {
-  
-  for (let i = 0; i < count; i++) {
-    loader.load('/models/leaf_tree.glb', (gltf) => {
-      const tree = gltf.scene.clone();
-      
-      const randomX = Math.random() * 45 + 2; 
-      const randomZ = Math.random() * 45 - 47; 
-      
-      tree.position.set(randomX, 0, randomZ);
-      
-      const randomScale = Math.random() * 0.003 + 0.004;
-      tree.scale.set(4,4,4);
-
-      tree.rotation.y = Math.random() * Math.PI * 2;
-      
-      scene.add(tree);
-    });
-  }
 }
 
-addRandomTreesToGreenArea(10); 
+function addRandomTreesToGreenArea(count) {
+    for (let i = 0; i < count; i++) {
+        loader.load("/models/leaf_tree.glb", (gltf) => {
+            const tree = gltf.scene.clone();
+
+            const randomX = Math.random() * 45 + 2;
+            const randomZ = Math.random() * 45 - 47;
+
+            tree.position.set(randomX, 0, randomZ);
+
+            const randomScale = Math.random() * 0.003 + 0.004;
+            tree.scale.set(4, 4, 4);
+
+            tree.rotation.y = Math.random() * Math.PI * 2;
+
+            scene.add(tree);
+        });
+    }
+}
+
+addRandomTreesToGreenArea(10);
 
 //END OF JEA
 
-// camera.position.x = 10;
+controls.target.set(0, 0, 0);
 
+// CAR
+let cars = [];
+let car = null;
+loader.load("/models/CityPack/Car.glb", (gltf) => {
+    const model = gltf.scene;
+    car = model.clone();
+    // Ke kanan
+    car.position.set(-47.7, 0.15, -0.3);
+    car.scale.set(0.25, 0.25, 0.25);
+    car.rotation.y = Math.PI / 2;
+
+    // car.position.set(-0.3 , 0.15, -0.3);
+    // car.scale.set(0.25, 0.25, 0.25);
+    // car.rotation.y = Math.PI;
+
+    scene.add(car);
+});
+
+let direction = "kanan_1";
+let prev_move = "x"; // x or z
 function animate() {
     // if (cloud) {
     //     // console.log("jalan cloud/");
     //     cloud.position.x += 0.01;
     // }
+    if (car) {
+        // console.log(direction, car.position.x, car.position.z);
+        if (direction === "kanan_1") {
+            car.position.x += 0.2;
+
+            if (car.position.x >= -2) {
+                car.position.set(-0.3, 0.15, -0.3);
+                car.rotation.y = Math.PI;
+                direction = "atas_1";
+            }
+        } else if (direction === "atas_1") {
+            car.position.z -= 0.2;
+
+            if (car.position.z <= -47) {
+                car.position.set(0.3, 0.15, -47);
+                car.rotation.y = -Math.PI;
+                direction = "bawah_1";
+            }
+        } else if (direction === "bawah_1") {
+            car.position.z += 0.2;
+
+            if (car.position.z >= -2) {
+                car.position.set(0.3, 0.15, -0.3);
+                car.rotation.y = Math.PI / 2;
+                direction = "kanan_2";
+            }
+        } else if (direction === "kanan_2") {
+            car.position.x += 0.2;
+
+            if (car.position.x >= 47) {
+                car.position.set(47, 0.15, 0.3);
+                car.rotation.y = Math.PI / 2;
+                direction = "kiri_1";
+            }
+        } else if (direction === "kiri_1") {
+            car.position.x -= 0.2;
+
+            if (car.position.x <= 0) {
+                car.position.set(0.3, 0.15, 0.3);
+                car.rotation.y = 0;
+                direction = "bawah_2";
+            }
+        } else if (direction === "bawah_2") {
+            car.position.z += 0.2;
+
+            if (car.position.z >= 48) {
+                car.position.set(-0.3, 0.15, 46);
+                car.rotation.y = Math.PI;
+                direction = "atas_2";
+            }
+        } else if (direction === "atas_2") {
+            car.position.z -= 0.2;
+
+            if (car.position.z <= 0) {
+                car.position.set(-0.3, 0.15, 0.3);
+                car.rotation.y = -Math.PI / 2;
+                direction = "kiri_2";
+            }
+        } else if (direction === "kiri_2") {
+            car.position.x -= 0.2;
+
+            if (car.position.x <= -47) {
+                car.position.set(-47, 0.15, -0.3);
+                car.rotation.y = Math.PI / 2;
+                direction = "kanan_1";
+            }
+        }
+    }
+
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
