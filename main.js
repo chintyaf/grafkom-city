@@ -577,13 +577,13 @@ loader.load('models/Factory (3).glb', (gltf) => {
     scene.add(fac2)
 })
 
-loader.load('models/Factory (4).glb', (gltf) => {
-    // BLOK 5
-    const fac = gltf.scene.clone()
-    fac.position.set(-18, 0, 27)
-    fac.scale.set(0.005, 0.005, 0.005)
-    scene.add(fac)
-})
+// loader.load('models/Factory (4).glb', (gltf) => {
+//     // BLOK 5
+//     const fac = gltf.scene.clone()
+//     fac.position.set(-18, 0, 27)
+//     fac.scale.set(0.005, 0.005, 0.005)
+//     scene.add(fac)
+// })
 
 loader.load('models/Wind turbine.glb', (gltf) => {
     // BLOK 6 - Ladang angin
