@@ -11,11 +11,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 //   new THREE.MeshStandardMaterial({ color: 0xffffff })
 // )
 
-// const canvas = document.createElement("canvas");
-// canvas.width = 2;
-// canvas.height = 2;
+const canvas = document.createElement("canvas");
+canvas.width = 2;
+canvas.height = 2;
 
-// const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
 
 // // kotak kiri atas
 // ctx.fillStyle = "#df2060ff"; // merah
@@ -1595,7 +1595,6 @@ loader.load('/models/american_house.glb', (gltf) => {
 // =====================
 // JEA - JALAN & PEREMPATAN -- GPT
 // =====================
-
 loader.load('/models/Road Bits.glb', (gltf) => {
   const root = gltf.scene.children[0]
 
@@ -1625,7 +1624,7 @@ loader.load('/models/Road Bits.glb', (gltf) => {
   // ===== PEREMPATAN =====
   const cross = roadJunction.clone()
   cross.position.set(0, 0.01, 0)
-  road.position.set(20, 0.01, -30)
+  cross.position.set(20, 0.01, -30)
   cross.position.set(20, 0.01, -30)
 
   scene.add(cross)
@@ -1671,27 +1670,6 @@ function addRandomTreesToGreenArea(count) {
     });
   }
 }
-
-function addRandomTreesToGreenArea(count) {
-    for (let i = 0; i < count; i++) {
-        loader.load("/models/leaf_tree.glb", (gltf) => {
-            const tree = gltf.scene.clone();
-
-            const randomX = Math.random() * 45 + 2;
-            const randomZ = Math.random() * 45 - 47;
-
-            tree.position.set(randomX, 0, randomZ);
-
-            const randomScale = Math.random() * 0.003 + 0.004;
-            tree.scale.set(4, 4, 4);
-
-            tree.rotation.y = Math.random() * Math.PI * 2;
-
-            scene.add(tree);
-        });
-    }
-}
-
 addRandomTreesToGreenArea(10);
 
 //END OF JEA
