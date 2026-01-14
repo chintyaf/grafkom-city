@@ -16,23 +16,23 @@ const canvas = document.createElement('canvas')
 canvas.width = 2
 canvas.height = 2
 
-const ctx = canvas.getContext('2d')
+// const ctx = canvas.getContext('2d')
 
-// kotak kiri atas
-ctx.fillStyle = '#df2060ff' // merah
-ctx.fillRect(0, 0, 1, 1)
+// // kotak kiri atas
+// ctx.fillStyle = '#df2060ff' // merah
+// ctx.fillRect(0, 0, 1, 1)
 
-// kanan atas
-ctx.fillStyle = '#00ff00' // hijau
-ctx.fillRect(1, 0, 1, 1)
+// // kanan atas
+// ctx.fillStyle = '#00ff00' // hijau
+// ctx.fillRect(1, 0, 1, 1)
 
-// kiri bawah
-ctx.fillStyle = '#4a4a4a' // biru > abu-abu base dasar
-ctx.fillRect(0, 1, 1, 1)
+// // kiri bawah
+// ctx.fillStyle = '#4a4a4a' // biru > abu-abu base dasar
+// ctx.fillRect(0, 1, 1, 1)
 
-// kanan bawah
-ctx.fillStyle = '#ffff00' // kuning
-ctx.fillRect(1, 1, 1, 1)
+// // kanan bawah
+// ctx.fillStyle = '#ffff00' // kuning
+// ctx.fillRect(1, 1, 1, 1)
 
 // buat texture untuk Three.js
 const texture = new THREE.CanvasTexture(canvas)
@@ -42,11 +42,14 @@ texture.minFilter = THREE.NearestFilter
 const ground = new THREE.Mesh(
   new THREE.PlaneGeometry(98, 98),
   new THREE.MeshStandardMaterial({
-    map: texture
-  })
+    map: texture,
+    // color: 0x505050,
+  }),
+  // new THREE.MeshStandardMaterial({ color: 0x808080 })
 )
 
 ground.rotation.x = -Math.PI / 2
+ground.position.y = 0  
 scene.add(ground)
 
 const camera = new THREE.PerspectiveCamera(
@@ -927,17 +930,17 @@ loader.load('models/Box B.glb', (gltf) => {
 
 loader.load('models/Parking Lot.glb', (gltf) => {
     // BLOK 8
-    const park1 = gltf.scene.clone()
-    park1.position.set(-34, 0, 26)
-    park1.scale.set(2, 2, 2)
-    scene.add(park1)
+    // const park1 = gltf.scene.clone()
+    // park1.position.set(-34, 0, 26)
+    // park1.scale.set(2, 2, 2)
+    // scene.add(park1)
     
     // BLOK 9
-    const park2 = gltf.scene.clone()
-    park2.position.set(-44, 0, 46)
-    park2.scale.set(2.2, 2.2, 2.2)
-    park2.rotation.y = Math.PI / 2
-    scene.add(park2)
+    // const park2 = gltf.scene.clone()
+    // park2.position.set(-44, 0, 46)
+    // park2.scale.set(2.2, 2.2, 2.2)
+    // park2.rotation.y = Math.PI / 2
+    // scene.add(park2)
 })
 
 loader.load('models/Pickup Truck.glb', (gltf) => {
@@ -976,9 +979,7 @@ loader.load('models/Truck.glb', (gltf) => {
     scene.add(truck3)
 })
 
-// ==========================================
 // END OF BRIGITTA
-// ==========================================
 // loader.load('/models/Bulldozer.glb', (gltf) => {
 //   const traffic = gltf.scene
 //   traffic.position.set(0.8, 0, 0.8)
