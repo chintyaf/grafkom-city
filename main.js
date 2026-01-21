@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Character } from "./character.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
@@ -2001,97 +2002,130 @@ loader.load("/models/CityPack/Car.glb", (gltf) => {
 
 let direction = "kanan_1";
 let prev_move = "x"; // x or z
+
+// ===== CONTROLS =====
+// const controls = new OrbitControls(camera, renderer.domElement);
+controls.enablePan = false;
+
+// ===== CHARACTER =====
+const character = new Character(scene, "/assets/Character/Generic-Female.glb");
+
+// ===== LOOP =====
 function animate() {
-  // if (cloud) {
-  //     // console.log("jalan cloud/");
-  //     cloud.position.x += 0.01;
-  // }
-  if (car) {
-    // console.log(direction, car.position.x, car.position.z);
-    if (direction === "kanan_1") {
-      car.position.x += 0.2;
+    requestAnimationFrame(animate);
+    const delta = character.clock.getDelta();
+    character.update(delta, camera, controls);
+    controls.update();
+    renderer.render(scene, camera);
+    if (controls.isLocked) {
+      const speed = 0.2; // Atur kecepatan jalan di sini
 
-      if (car.position.x >= -2) {
-        car.position.set(-0.3, 0.15, -0.3);
-        car.rotation.y = Math.PI;
-        direction = "atas_1";
-      }
-    } else if (direction === "atas_1") {
-      car.position.z -= 0.2;
+      // Logika Move:
+      // moveForward(positif) = Maju
+      // moveForward(negatif) = Mundur
+      // moveRight(positif)   = Kanan
+      // moveRight(negatif)   = Kiri
 
-      if (car.position.z <= -47) {
-        car.position.set(0.3, 0.15, -47);
-        car.rotation.y = -Math.PI;
-        direction = "bawah_1";
-      }
-    } else if (direction === "bawah_1") {
-      car.position.z += 0.2;
-
-      if (car.position.z >= -2) {
-        car.position.set(0.3, 0.15, -0.3);
-        car.rotation.y = Math.PI / 2;
-        direction = "kanan_2";
-      }
-    } else if (direction === "kanan_2") {
-      car.position.x += 0.2;
-
-      if (car.position.x >= 47) {
-        car.position.set(47, 0.15, 0.3);
-        car.rotation.y = Math.PI / 2;
-        direction = "kiri_1";
-      }
-    } else if (direction === "kiri_1") {
-      car.position.x -= 0.2;
-
-      if (car.position.x <= 0) {
-        car.position.set(0.3, 0.15, 0.3);
-        car.rotation.y = 0;
-        direction = "bawah_2";
-      }
-    } else if (direction === "bawah_2") {
-      car.position.z += 0.2;
-
-      if (car.position.z >= 48) {
-        car.position.set(-0.3, 0.15, 46);
-        car.rotation.y = Math.PI;
-        direction = "atas_2";
-      }
-    } else if (direction === "atas_2") {
-      car.position.z -= 0.2;
-
-      if (car.position.z <= 0) {
-        car.position.set(-0.3, 0.15, 0.3);
-        car.rotation.y = -Math.PI / 2;
-        direction = "kiri_2";
-      }
-    } else if (direction === "kiri_2") {
-      car.position.x -= 0.2;
-
-      if (car.position.x <= -47) {
-        car.position.set(-47, 0.15, -0.3);
-        car.rotation.y = Math.PI / 2;
-        direction = "kanan_1";
-      }
+      if (moveForward) controls.moveForward(speed);
+      if (moveBackward) controls.moveForward(-speed);
+      if (moveRight) controls.moveRight(speed);
+      if (moveLeft) controls.moveRight(-speed);
     }
-  }
-
-  if (controls.isLocked) {
-    const speed = 0.2; // Atur kecepatan jalan di sini
-
-    // Logika Move:
-    // moveForward(positif) = Maju
-    // moveForward(negatif) = Mundur
-    // moveRight(positif)   = Kanan
-    // moveRight(negatif)   = Kiri
-
-    if (moveForward) controls.moveForward(speed);
-    if (moveBackward) controls.moveForward(-speed);
-    if (moveRight) controls.moveRight(speed);
-    if (moveLeft) controls.moveRight(-speed);
-  }
-
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
 }
+
 animate();
+
+// function animate() {
+//   // if (cloud) {
+//   //     // console.log("jalan cloud/");
+//   //     cloud.position.x += 0.01;
+//   // }
+//   if (car) {
+//     // console.log(direction, car.position.x, car.position.z);
+//     if (direction === "kanan_1") {
+//       car.position.x += 0.2;
+
+//       if (car.position.x >= -2) {
+//         car.position.set(-0.3, 0.15, -0.3);
+//         car.rotation.y = Math.PI;
+//         direction = "atas_1";
+//       }
+//     } else if (direction === "atas_1") {
+//       car.position.z -= 0.2;
+
+//       if (car.position.z <= -47) {
+//         car.position.set(0.3, 0.15, -47);
+//         car.rotation.y = -Math.PI;
+//         direction = "bawah_1";
+//       }
+//     } else if (direction === "bawah_1") {
+//       car.position.z += 0.2;
+
+//       if (car.position.z >= -2) {
+//         car.position.set(0.3, 0.15, -0.3);
+//         car.rotation.y = Math.PI / 2;
+//         direction = "kanan_2";
+//       }
+//     } else if (direction === "kanan_2") {
+//       car.position.x += 0.2;
+
+//       if (car.position.x >= 47) {
+//         car.position.set(47, 0.15, 0.3);
+//         car.rotation.y = Math.PI / 2;
+//         direction = "kiri_1";
+//       }
+//     } else if (direction === "kiri_1") {
+//       car.position.x -= 0.2;
+
+//       if (car.position.x <= 0) {
+//         car.position.set(0.3, 0.15, 0.3);
+//         car.rotation.y = 0;
+//         direction = "bawah_2";
+//       }
+//     } else if (direction === "bawah_2") {
+//       car.position.z += 0.2;
+
+//       if (car.position.z >= 48) {
+//         car.position.set(-0.3, 0.15, 46);
+//         car.rotation.y = Math.PI;
+//         direction = "atas_2";
+//       }
+//     } else if (direction === "atas_2") {
+//       car.position.z -= 0.2;
+
+//       if (car.position.z <= 0) {
+//         car.position.set(-0.3, 0.15, 0.3);
+//         car.rotation.y = -Math.PI / 2;
+//         direction = "kiri_2";
+//       }
+//     } else if (direction === "kiri_2") {
+//       car.position.x -= 0.2;
+
+//       if (car.position.x <= -47) {
+//         car.position.set(-47, 0.15, -0.3);
+//         car.rotation.y = Math.PI / 2;
+//         direction = "kanan_1";
+//       }
+//     }
+//   }
+
+//   if (controls.isLocked) {
+//     const speed = 0.2; // Atur kecepatan jalan di sini
+
+//     // Logika Move:
+//     // moveForward(positif) = Maju
+//     // moveForward(negatif) = Mundur
+//     // moveRight(positif)   = Kanan
+//     // moveRight(negatif)   = Kiri
+
+//     if (moveForward) controls.moveForward(speed);
+//     if (moveBackward) controls.moveForward(-speed);
+//     if (moveRight) controls.moveRight(speed);
+//     if (moveLeft) controls.moveRight(-speed);
+//   }
+
+//   requestAnimationFrame(animate);
+//   controls.update();
+//   renderer.render(scene, camera);
+// }
+// animate();
