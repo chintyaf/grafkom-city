@@ -1,65 +1,77 @@
 .popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  backdrop-filter: blur(4px);
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    backdrop-filter: blur(4px);
 }
 
 .popup.hidden {
-  display: none;
+    display: none;
 }
 
 .popup-card {
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  padding: 24px 28px;
-  width: 380px;
-  color: #fff;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  animation: pop 0.3s ease;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 24px 28px;
+    width: 380px;
+    color: #fff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: pop 0.3s ease;
 }
 
 .popup-card h2 {
-  margin-top: 0;
-  font-size: 22px;
+    margin-top: 0;
+    font-size: 22px;
 }
 
 .popup-card p {
-  font-size: 14px;
-  line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .popup-info {
-  margin-top: 14px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  opacity: 0.9;
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    opacity: 0.9;
 }
 
 #popup-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 @keyframes pop {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    color: white;
+    pointer-events: none;
+    display: none;
+    user-select: none;
 }

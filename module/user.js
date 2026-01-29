@@ -8,6 +8,8 @@ export class User {
         this.scene = scene;
         this.camera = camera;
         this.modelPath = modelPath;
+        this.collisionHeight = 1.2; // tinggi dada
+        this.heightTolerance = 0.6; // toleransi beda tinggi
 
         /* ===== MODEL ===== */
         this.character = null;
@@ -27,6 +29,9 @@ export class User {
         this.speed = 6;
 
         this.camera.position.y = this.fpHeight;
+
+        this.raycaster = new THREE.Raycaster();
+        this.collisionDistance = 1; // jarak badan ke object
 
         this.loadModel();
         this.setupControls();
@@ -144,29 +149,34 @@ export class User {
         if (this.keys.d) moveDir.add(right);
         if (this.keys.a) moveDir.addScaledVector(right, -1);
 
-        let isMoving = false;
+        let bodyMoved = false; // ✅ PENTING
+
         if (moveDir.lengthSq() > 0) {
-            isMoving = true;
             moveDir.normalize();
-            this.character.position.addScaledVector(
-                moveDir,
-                this.speed * delta,
-            );
+            const moveDist = this.speed * delta;
+
+            if (!this.checkCollision(moveDir)) {
+                this.character.position.addScaledVector(moveDir, moveDist);
+                bodyMoved = true; // ✅ hanya true kalau benar-benar pindah
+            }
+
             this.character.lookAt(this.character.position.clone().add(moveDir));
         }
 
-        // smooth movement kamera mengikuti karakter
-        const targetOffset = new THREE.Vector3(0, 1.5, 0); // tinggi target
+        // kamera selalu follow target
+        const targetOffset = new THREE.Vector3(0, 1.5, 0);
         orbitControls.target.lerp(
             this.character.position.clone().add(targetOffset),
             0.1,
         );
-        if (isMoving) {
+
+        // kamera hanya geser kalau body pindah
+        if (bodyMoved) {
             const deltaPos = moveDir.clone().multiplyScalar(this.speed * delta);
-            this.camera.position.add(deltaPos); // geser kamera sesuai karakter
+            this.camera.position.add(deltaPos);
         }
 
-        return isMoving;
+        return bodyMoved;
     }
 
     firstPerson(delta) {
@@ -174,28 +184,69 @@ export class User {
 
         let isMoving = false;
         const speed = this.speed * delta;
+        const dir = new THREE.Vector3();
 
         if (this.keys.w) {
-            this.fpControls.moveForward(speed);
-            isMoving = true;
-        }
-        if (this.keys.s) {
-            this.fpControls.moveForward(-speed);
-            isMoving = true;
-        }
-        if (this.keys.d) {
-            this.fpControls.moveRight(speed);
-            isMoving = true;
-        }
-        if (this.keys.a) {
-            this.fpControls.moveRight(-speed);
-            isMoving = true;
+            this.camera.getWorldDirection(dir);
+            if (!this.checkCollision(dir)) {
+                this.fpControls.moveForward(speed);
+                isMoving = true;
+            }
         }
 
-        // sinkron body karakter ke posisi kamera
-        // this.character.position.copy(this.fpControls.getObject().position);
-        // this.character.position.y -= this.fpHeight;
+        if (this.keys.s) {
+            this.camera.getWorldDirection(dir).negate();
+            if (!this.checkCollision(dir)) {
+                this.fpControls.moveForward(-speed);
+                isMoving = true;
+            }
+        }
+
+        if (this.keys.d) {
+            dir.set(1, 0, 0).applyQuaternion(this.camera.quaternion);
+            if (!this.checkCollision(dir)) {
+                this.fpControls.moveRight(speed);
+                isMoving = true;
+            }
+        }
+
+        if (this.keys.a) {
+            dir.set(-1, 0, 0).applyQuaternion(this.camera.quaternion);
+            if (!this.checkCollision(dir)) {
+                this.fpControls.moveRight(-speed);
+                isMoving = true;
+            }
+        }
 
         return isMoving;
+    }
+
+    checkCollision(moveDir) {
+        if (!this.character) return false;
+
+        const origin = this.character.position.clone();
+        origin.y += this.collisionHeight; // ray dari dada
+
+        this.raycaster.set(origin, moveDir.clone().normalize());
+
+        const hits = this.raycaster.intersectObjects(this.scene.children, true);
+
+        for (const hit of hits) {
+            if (
+                hit.object === this.character ||
+                this.character.children.includes(hit.object)
+            )
+                continue;
+
+            // beda tinggi masih ditoleransi
+            const heightDiff = Math.abs(hit.point.y - origin.y);
+            if (heightDiff > this.heightTolerance) continue;
+
+            if (hit.distance < this.collisionDistance) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

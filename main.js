@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import { PointerLockControls } from "three/ examples/jsm/controls/PointerLockControls.js";
 import { User } from "./module/user.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { initUI, updateUI, bindPopupClose } from "./module/ui.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
@@ -1499,7 +1500,7 @@ popup.innerHTML = `
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(100,200,255,0.4);
   width: 100%;
-">✕ Tutup</button>
+" id="popup-close">✕ Tutup</button>
 `;
 
 document.body.appendChild(popup);
@@ -1806,28 +1807,6 @@ loader.load("/models/american_house.glb", (gltf) => {
     });
 });
 
-window.addEventListener("click", (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(clickableObjects, true);
-
-    if (intersects.length > 0) {
-        let obj = intersects[0].object;
-
-        // naik ke parent sampai ketemu userData
-        while (obj.parent && !obj.userData.title) {
-            obj = obj.parent;
-        }
-
-        if (obj.userData.title) {
-            showPopup(obj.userData);
-        }
-    }
-});
-
 function createStraightRoad({
     model,
     scene,
@@ -1941,10 +1920,21 @@ const user = new User(
 );
 
 document.body.addEventListener("click", () => {
-    if (character.cameraMode === "first") {
-        character.fpControls.lock();
+    if (user.cameraMode === "first") {
+        user.fpControls.lock();
     }
 });
+
+// ===== CONTROLS =====
+
+// setelah semua siap
+initUI({
+    user,
+    camera,
+    clickableObjects,
+    showPopup,
+});
+bindPopupClose();
 
 // animasi loop
 const clock = new THREE.Clock();
@@ -1958,6 +1948,7 @@ function animate() {
     // disable OrbitControls saat FP
     controls.enabled = user.cameraMode === "third";
 
+    updateUI(); // sync crosshair
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
