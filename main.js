@@ -3,27 +3,37 @@ import { Character } from "./character.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
-
+import { Ocean } from "./Ocean.js";
+import { MapManager } from "./MapManager.js";
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
+scene.fog = new THREE.FogExp2(0x87ceeb, 0.002);
 // const ground = new THREE.Mesh(
 //   new THREE.PlaneGeometry(98, 98),
 //   new THREE.MeshStandardMaterial({ color: 0xffffff })
 // )
 
-const ground = new THREE.Mesh(
-  new THREE.PlaneGeometry(98, 98),
-  new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-  }),
-);
-ground.castShadow = true;
-ground.receiveShadow = true;
+//ground
+// const ground = new THREE.Mesh(
+//   new THREE.PlaneGeometry(98, 98),
+//   new THREE.MeshStandardMaterial({
+//     color: 0xffffff,
+//   }),
+// );
+// ground.castShadow = true;
+// ground.receiveShadow = true;
 
-ground.rotation.x = -Math.PI / 2;
-scene.add(ground);
+// ground.rotation.x = -Math.PI / 2;
+// scene.add(ground);
+
+// tambahan texture laut
+const ocean = new Ocean(scene);
+ocean.createOcean();
+
+// tambahan untuk pager + 
+const mapManager = new MapManager(scene);
+mapManager.createLevel();
 
 // const camera = new THREE.PerspectiveCamera(
 //     60,
@@ -119,15 +129,17 @@ loader.load("models/Road Bits.glb", (gltf) => {
   //         child.children.find((c) => c.name === "road_corner")
   //     );
   // });
+  const road_straight = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_straight"
+  );
+  
   const road_corner = gltf.scene.children[0].children.find(
     (c) => c.name === "road_corner",
   );
   const road_corner_curved = gltf.scene.children[0].children.find(
     (c) => c.name === "road_corner_curved",
   );
-  const road_straight = gltf.scene.children[0].children.find(
-    (c) => c.name === "road_straight",
-  );
+  
   const road_junction = gltf.scene.children[0].children.find(
     (c) => c.name === "road_junction",
   );
@@ -686,25 +698,25 @@ loader.load("models/Watertower.glb", (gltf) => {
   scene.add(water3);
 });
 
-loader.load("models/Dumpster (1).glb", (gltf) => {
-  // BLOK 4
-  const dump1 = gltf.scene.clone();
-  dump1.position.set(-20, 0, 11);
-  dump1.scale.set(1.4, 1.4, 1.4);
-  scene.add(dump1);
+// loader.load("models/Dumpster (1).glb", (gltf) => {
+//   // BLOK 4
+//   const dump1 = gltf.scene.clone();
+//   dump1.position.set(-20, 0, 11);
+//   dump1.scale.set(1.4, 1.4, 1.4);
+//   scene.add(dump1);
 
-  // BLOK 5
-  const dump2 = gltf.scene.clone();
-  dump2.position.set(-25, 0, 21);
-  dump2.scale.set(1.3, 1.3, 1.3);
-  scene.add(dump2);
+//   // BLOK 5
+//   const dump2 = gltf.scene.clone();
+//   dump2.position.set(-25, 0, 21);
+//   dump2.scale.set(1.3, 1.3, 1.3);
+//   scene.add(dump2);
 
-  // BLOK 6
-  const dump3 = gltf.scene.clone();
-  dump3.position.set(-21, 0, 34);
-  dump3.scale.set(1.4, 1.4, 1.4);
-  scene.add(dump3);
-});
+//   // BLOK 6
+//   const dump3 = gltf.scene.clone();
+//   dump3.position.set(-21, 0, 34);
+//   dump3.scale.set(1.4, 1.4, 1.4);
+//   scene.add(dump3);
+// });
 
 loader.load("models/Dumpster.glb", (gltf) => {
   const dmp1 = gltf.scene.clone();
@@ -2012,8 +2024,9 @@ const character = new Character(scene, "/assets/Character/Generic-Female.glb");
 
 // ===== LOOP =====
 function animate() {
-    requestAnimationFrame(animate);
-    const delta = character.clock.getDelta();
+  requestAnimationFrame(animate);
+  ocean.updateWater(0.01)
+  const delta = character.clock.getDelta();
     character.update(delta, camera, controls);
     controls.update();
     renderer.render(scene, camera);
@@ -2030,6 +2043,8 @@ function animate() {
       if (moveBackward) controls.moveForward(-speed);
       if (moveRight) controls.moveRight(speed);
       if (moveLeft) controls.moveRight(-speed);
+
+      mapManager.checkCollision(camera);
     }
 }
 
