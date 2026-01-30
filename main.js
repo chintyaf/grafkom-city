@@ -7,8 +7,8 @@ import { User } from "./module/user.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { initUI, updateUI, bindPopupClose } from "./module/ui.js";
 
-// const scene = new THREE.Scene();
-// scene.background = new THREE.Color(0x87ceeb);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
 
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 import { Ocean } from "./Ocean.js";
