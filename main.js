@@ -1999,12 +1999,8 @@ function animate() {
 
     // TP/FP update
     user.update(delta, controls);
-    // console.log("character camera mode:", character.cameraMode);
- 
-    // mapManager.checkCollision(camera);
-    if (mapManager) {
-        mapManager.checkCollision(camera);
-    }
+
+    mapManager.checkCollision(user.character);
     
     if (ocean) ocean.updateWater();
 
@@ -2014,6 +2010,7 @@ function animate() {
     updateUI(); // sync crosshair
     
     renderer.render(scene, camera);
+
 
 }
 animate();

@@ -179,47 +179,97 @@ export class User {
         return bodyMoved;
     }
 
+    // firstPerson(delta) {
+    //     if (!this.fpControls.isLocked) return false;
+
+    //     let isMoving = false;
+    //     const speed = this.speed * delta;
+    //     const dir = new THREE.Vector3();
+
+    //     if (this.keys.w) {
+    //         this.camera.getWorldDirection(dir);
+    //         if (!this.checkCollision(dir)) {
+    //             this.fpControls.moveForward(speed);
+    //             isMoving = true;
+    //         }
+    //     }
+
+    //     if (this.keys.s) {
+    //         this.camera.getWorldDirection(dir).negate();
+    //         if (!this.checkCollision(dir)) {
+    //             this.fpControls.moveForward(-speed);
+    //             isMoving = true;
+    //         }
+    //     }
+
+    //     if (this.keys.d) {
+    //         dir.set(1, 0, 0).applyQuaternion(this.camera.quaternion);
+    //         if (!this.checkCollision(dir)) {
+    //             this.fpControls.moveRight(speed);
+    //             isMoving = true;
+    //         }
+    //     }
+
+    //     if (this.keys.a) {
+    //         dir.set(-1, 0, 0).applyQuaternion(this.camera.quaternion);
+    //         if (!this.checkCollision(dir)) {
+    //             this.fpControls.moveRight(-speed);
+    //             isMoving = true;
+    //         }
+    //     }
+
+    //     return isMoving;
+    // }
     firstPerson(delta) {
         if (!this.fpControls.isLocked) return false;
 
         let isMoving = false;
         const speed = this.speed * delta;
-        const dir = new THREE.Vector3();
+
+        const moveDir = new THREE.Vector3();
 
         if (this.keys.w) {
-            this.camera.getWorldDirection(dir);
-            if (!this.checkCollision(dir)) {
-                this.fpControls.moveForward(speed);
-                isMoving = true;
-            }
+            const forward = new THREE.Vector3();
+            this.camera.getWorldDirection(forward);
+            forward.y = 0;
+            forward.normalize();
+            moveDir.add(forward);
         }
 
         if (this.keys.s) {
-            this.camera.getWorldDirection(dir).negate();
-            if (!this.checkCollision(dir)) {
-                this.fpControls.moveForward(-speed);
-                isMoving = true;
-            }
+            const backward = new THREE.Vector3();
+            this.camera.getWorldDirection(backward);
+            backward.y = 0;
+            backward.normalize();
+            moveDir.addScaledVector(backward, -1);
         }
 
         if (this.keys.d) {
-            dir.set(1, 0, 0).applyQuaternion(this.camera.quaternion);
-            if (!this.checkCollision(dir)) {
-                this.fpControls.moveRight(speed);
-                isMoving = true;
-            }
+            const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion);
+            right.y = 0;
+            right.normalize();
+            moveDir.add(right);
         }
 
         if (this.keys.a) {
-            dir.set(-1, 0, 0).applyQuaternion(this.camera.quaternion);
-            if (!this.checkCollision(dir)) {
-                this.fpControls.moveRight(-speed);
+            const left = new THREE.Vector3(-1, 0, 0).applyQuaternion(this.camera.quaternion);
+            left.y = 0;
+            left.normalize();
+            moveDir.add(left);
+        }
+
+        if (moveDir.lengthSq() > 0) {
+            moveDir.normalize();
+
+            if (!this.checkCollision(moveDir)) {
+                this.character.position.addScaledVector(moveDir, speed);
                 isMoving = true;
             }
         }
 
         return isMoving;
     }
+
 
     checkCollision(moveDir) {
         if (!this.character) return false;
