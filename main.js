@@ -1993,20 +1993,27 @@ bindPopupClose();
 // animasi loop
 const clock = new THREE.Clock();
 function animate() {
+    requestAnimationFrame(animate);
+
     const delta = clock.getDelta();
 
     // TP/FP update
     user.update(delta, controls);
     // console.log("character camera mode:", character.cameraMode);
+ 
+    // mapManager.checkCollision(camera);
+    if (mapManager) {
+        mapManager.checkCollision(camera);
+    }
+    
+    if (ocean) ocean.updateWater();
 
     // disable OrbitControls saat FP
     controls.enabled = user.cameraMode === "third";
 
     updateUI(); // sync crosshair
+    
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
-
-    mapManager.checkCollision(camera);
 
 }
 animate();
