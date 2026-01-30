@@ -1991,60 +1991,60 @@ initUI({
 bindPopupClose();
 
 // animasi loop
-// const clock = new THREE.Clock();
-// function animate() {
-//     const delta = clock.getDelta();
+const clock = new THREE.Clock();
+function animate() {
+    const delta = clock.getDelta();
 
-//     // TP/FP update
-//     user.update(delta, controls);
-//     // console.log("character camera mode:", character.cameraMode);
+    // TP/FP update
+    user.update(delta, controls);
+    // console.log("character camera mode:", character.cameraMode);
 
-//     // disable OrbitControls saat FP
-//     controls.enabled = user.cameraMode === "third";
+    // disable OrbitControls saat FP
+    controls.enabled = user.cameraMode === "third";
 
-//     updateUI(); // sync crosshair
-//     renderer.render(scene, camera);
-//     requestAnimationFrame(animate);
-// }
-// animate();
+    updateUI(); // sync crosshair
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+}
+animate();
 
 // let direction = "kanan_1";
 // let prev_move = "x"; // x or z
 
 // ===== CONTROLS =====
 // const controls = new OrbitControls(camera, renderer.domElement);
-controls.enablePan = false;
+// controls.enablePan = false;
 
 // ===== CHARACTER =====
-const character = new Character(scene, "/assets/Character/Generic-Female.glb");
+// const character = new Character(scene, "/assets/Character/Generic-Female.glb");
 
 // ===== LOOP =====
-function animate() {
-    requestAnimationFrame(animate);
-    ocean.updateWater(0.01);
-    const delta = character.clock.getDelta();
-    character.update(delta, camera, controls);
-    controls.update();
-    renderer.render(scene, camera);
-    if (controls.isLocked) {
-        const speed = 0.2; // Atur kecepatan jalan di sini
+// function animate() {
+//     requestAnimationFrame(animate);
+//     ocean.updateWater(0.01);
+//     const delta = character.clock.getDelta();
+//     character.update(delta, camera, controls);
+//     controls.update();
+//     renderer.render(scene, camera);
+//     if (controls.isLocked) {
+//         const speed = 0.2; // Atur kecepatan jalan di sini
 
-        // Logika Move:
-        // moveForward(positif) = Maju
-        // moveForward(negatif) = Mundur
-        // moveRight(positif)   = Kanan
-        // moveRight(negatif)   = Kiri
+//         // Logika Move:
+//         // moveForward(positif) = Maju
+//         // moveForward(negatif) = Mundur
+//         // moveRight(positif)   = Kanan
+//         // moveRight(negatif)   = Kiri
 
-        if (moveForward) controls.moveForward(speed);
-        if (moveBackward) controls.moveForward(-speed);
-        if (moveRight) controls.moveRight(speed);
-        if (moveLeft) controls.moveRight(-speed);
+//         if (moveForward) controls.moveForward(speed);
+//         if (moveBackward) controls.moveForward(-speed);
+//         if (moveRight) controls.moveRight(speed);
+//         if (moveLeft) controls.moveRight(-speed);
 
-        mapManager.checkCollision(camera);
-    }
-}
-
-animate();
+//         mapManager.checkCollision(camera);
+//     }
+// }
+// 
+// an/imate();
 
 // // CAR
 // let cars = [];
