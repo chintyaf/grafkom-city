@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Character } from "./character.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 // import { PointerLockControls } from "three/ examples/jsm/controls/PointerLockControls.js";
@@ -9,22 +10,38 @@ import { initUI, updateUI, bindPopupClose } from "./module/ui.js";
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
 
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
+import { Ocean } from "./Ocean.js";
+import { MapManager } from "./MapManager.js";
+// const scene = new THREE.Scene();
+// scene.background = new THREE.Color(0x87ceeb);
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+scene.fog = new THREE.FogExp2(0x87ceeb, 0.002);
 // const ground = new THREE.Mesh(
 //   new THREE.PlaneGeometry(98, 98),
 //   new THREE.MeshStandardMaterial({ color: 0xffffff })
 // )
 
-const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(98, 98),
-    new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-    }),
-);
-ground.castShadow = true;
-ground.receiveShadow = true;
+//ground
+// const ground = new THREE.Mesh(
+//   new THREE.PlaneGeometry(98, 98),
+//   new THREE.MeshStandardMaterial({
+//     color: 0xffffff,
+//   }),
+// );
+// ground.castShadow = true;
+// ground.receiveShadow = true;
 
-ground.rotation.x = -Math.PI / 2;
-scene.add(ground);
+// ground.rotation.x = -Math.PI / 2;
+// scene.add(ground);
+
+// tambahan texture laut
+const ocean = new Ocean(scene);
+ocean.createOcean();
+
+// tambahan untuk pager + 
+const mapManager = new MapManager(scene);
+mapManager.createLevel();
 
 // const camera = new THREE.PerspectiveCamera(
 //     60,
@@ -99,48 +116,85 @@ scene.add(sun);
 const loader = new GLTFLoader();
 
 loader.load("models/Road Bits.glb", (gltf) => {
-    const roadBits = gltf.scene;
-    roadBits.position.set(0, 0, 0);
-    // scene.add(roadBits)
-    // gltf.scene.children.forEach((child, index) => {
-    //     console.log(`Index ${index}: ${child.name}`);
-    //     console.log("makan nasi", child.children);
-    //     console.log(
-    //         "makan nasi",
-    //         child.children.find((c) => c.name === "road_corner")
-    //     );
-    // });
-    const road_corner = gltf.scene.children[0].children.find(
-        (c) => c.name === "road_corner",
-    );
-    const road_corner_curved = gltf.scene.children[0].children.find(
-        (c) => c.name === "road_corner_curved",
-    );
-    const road_straight = gltf.scene.children[0].children.find(
-        (c) => c.name === "road_straight",
-    );
-    const road_junction = gltf.scene.children[0].children.find(
-        (c) => c.name === "road_junction",
-    );
-    const road_straight_crossing = gltf.scene.children[0].children.find(
-        (c) => c.name === "road_straight_crossing",
-    );
-    const road_tsplit = gltf.scene.children[0].children.find(
-        (c) => c.name === "road_tsplit",
-    );
-    for (let i = -24; i <= 24; i++) {
-        const road1 = road_straight.clone();
-        road1.position.set(0, 0, i * 2); // z =2,4,6,8,10,12,14,16,18,20
-        // road1.rotation.z = Math.PI / 2
-        scene.add(road1);
-    }
+  const roadBits = gltf.scene;
+  roadBits.position.set(0, 0, 0);
+  // scene.add(roadBits)
+  // gltf.scene.children.forEach((child, index) => {
+  //     console.log(`Index ${index}: ${child.name}`);
+  //     console.log("makan nasi", child.children);
+  //     console.log(
+  //         "makan nasi",
+  //         child.children.find((c) => c.name === "road_corner")
+  //     );
+  // });
+  const road_straight = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_straight"
+  );
+  
+  const road_corner = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_corner",
+  );
+  const road_corner_curved = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_corner_curved",
+  );
+  
+  const road_junction = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_junction",
+  );
+  const road_straight_crossing = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_straight_crossing",
+  );
+  const road_tsplit = gltf.scene.children[0].children.find(
+    (c) => c.name === "road_tsplit",
+  );
+  for (let i = -24; i <= 24; i++) {
+    const road1 = road_straight.clone();
+    road1.position.set(0, 0, i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road1.rotation.z = Math.PI / 2
+    scene.add(road1);
+  }
 
-    // for (let i=1; i<=24; i++) {
-    //   const road2 = road_straight.clone()
-    //   road2.position.set(0, 0, -i*2) // z =2,4,6,8,10,12,14,16,18,20
-    //   // road2.rotation.z = Math.PI / 2
-    //   scene.add(road2)
-    // }
+  for (let i = -24; i <= 24; i++) {
+    const road2 = road_straight.clone();
+    road2.position.set(48, 0, -i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road2.rotation.z = Math.PI / 2
+    scene.add(road2);
+  }
+
+  for (let i = 0; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(42, 0, -i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  for (let i = 0; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(42, 0, -i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  for (let i = -24; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(i * 2, 0, 48); // z =2,4,6,8,10,12,14,16,18,20
+    road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  for (let i = -24; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(-49, 0, i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  // for (let i=1; i<=24; i++) {
+  //   const road2 = road_straight.clone()
+  //   road2.position.set(0, 0, -i*2) // z =2,4,6,8,10,12,14,16,18,20
+  //   // road2.rotation.z = Math.PI / 2
+  //   scene.add(road2)
+  // }
 
     for (let i = -24; i <= 24; i++) {
         const road = road_straight.clone();
@@ -677,25 +731,25 @@ loader.load("models/Watertower.glb", (gltf) => {
     scene.add(water3);
 });
 
-loader.load("models/Dumpster (1).glb", (gltf) => {
-    // BLOK 4
-    const dump1 = gltf.scene.clone();
-    dump1.position.set(-20, 0, 11);
-    dump1.scale.set(1.4, 1.4, 1.4);
-    scene.add(dump1);
+// loader.load("models/Dumpster (1).glb", (gltf) => {
+//   // BLOK 4
+//   const dump1 = gltf.scene.clone();
+//   dump1.position.set(-20, 0, 11);
+//   dump1.scale.set(1.4, 1.4, 1.4);
+//   scene.add(dump1);
 
-    // BLOK 5
-    const dump2 = gltf.scene.clone();
-    dump2.position.set(-25, 0, 21);
-    dump2.scale.set(1.3, 1.3, 1.3);
-    scene.add(dump2);
+//   // BLOK 5
+//   const dump2 = gltf.scene.clone();
+//   dump2.position.set(-25, 0, 21);
+//   dump2.scale.set(1.3, 1.3, 1.3);
+//   scene.add(dump2);
 
-    // BLOK 6
-    const dump3 = gltf.scene.clone();
-    dump3.position.set(-21, 0, 34);
-    dump3.scale.set(1.4, 1.4, 1.4);
-    scene.add(dump3);
-});
+//   // BLOK 6
+//   const dump3 = gltf.scene.clone();
+//   dump3.position.set(-21, 0, 34);
+//   dump3.scale.set(1.4, 1.4, 1.4);
+//   scene.add(dump3);
+// });
 
 loader.load("models/Dumpster.glb", (gltf) => {
     const dmp1 = gltf.scene.clone();
@@ -1951,7 +2005,42 @@ function animate() {
     updateUI(); // sync crosshair
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
+let direction = "kanan_1";
+let prev_move = "x"; // x or z
+
+// ===== CONTROLS =====
+// const controls = new OrbitControls(camera, renderer.domElement);
+controls.enablePan = false;
+
+// ===== CHARACTER =====
+const character = new Character(scene, "/assets/Character/Generic-Female.glb");
+
+// ===== LOOP =====
+function animate() {
+  requestAnimationFrame(animate);
+  ocean.updateWater(0.01)
+  const delta = character.clock.getDelta();
+    character.update(delta, camera, controls);
+    controls.update();
+    renderer.render(scene, camera);
+    if (controls.isLocked) {
+      const speed = 0.2; // Atur kecepatan jalan di sini
+
+      // Logika Move:
+      // moveForward(positif) = Maju
+      // moveForward(negatif) = Mundur
+      // moveRight(positif)   = Kanan
+      // moveRight(negatif)   = Kiri
+
+      if (moveForward) controls.moveForward(speed);
+      if (moveBackward) controls.moveForward(-speed);
+      if (moveRight) controls.moveRight(speed);
+      if (moveLeft) controls.moveRight(-speed);
+
+      mapManager.checkCollision(camera);
+    }
 }
+
 animate();
 
 // // CAR
@@ -2062,6 +2151,20 @@ animate();
 //       if (moveRight ) controls.moveRight(speed);
 //       if (moveLeft) controls.moveRight(-speed);
 //     }
+//   if (controls.isLocked) {
+//     const speed = 0.2; // Atur kecepatan jalan di sini
+
+//     // Logika Move:
+//     // moveForward(positif) = Maju
+//     // moveForward(negatif) = Mundur
+//     // moveRight(positif)   = Kanan
+//     // moveRight(negatif)   = Kiri
+
+//     if (moveForward) controls.moveForward(speed);
+//     if (moveBackward) controls.moveForward(-speed);
+//     if (moveRight) controls.moveRight(speed);
+//     if (moveLeft) controls.moveRight(-speed);
+//   }
 
 //   requestAnimationFrame(animate);
 //   controls.update();
