@@ -156,6 +156,41 @@ loader.load("models/Road Bits.glb", (gltf) => {
     scene.add(road1);
   }
 
+  for (let i = -24; i <= 24; i++) {
+    const road2 = road_straight.clone();
+    road2.position.set(48, 0, -i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road2.rotation.z = Math.PI / 2
+    scene.add(road2);
+  }
+
+  for (let i = 0; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(42, 0, -i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  for (let i = 0; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(42, 0, -i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  for (let i = -24; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(i * 2, 0, 48); // z =2,4,6,8,10,12,14,16,18,20
+    road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
+  for (let i = -24; i <= 24; i++) {
+    const road3 = road_straight.clone();
+    road3.position.set(-49, 0, i * 2); // z =2,4,6,8,10,12,14,16,18,20
+    // road3.rotation.z = Math.PI / 2
+    scene.add(road3);
+  }
+
   // for (let i=1; i<=24; i++) {
   //   const road2 = road_straight.clone()
   //   road2.position.set(0, 0, -i*2) // z =2,4,6,8,10,12,14,16,18,20
