@@ -8,8 +8,8 @@ export class User {
         this.scene = scene;
         this.camera = camera;
         this.modelPath = modelPath;
-        this.collisionHeight = 1.2; // tinggi dada
-        this.heightTolerance = 0.6; // toleransi beda tinggi
+        this.collisionHeight = 0.7; // tinggi dada
+        this.heightTolerance = 0.3; // toleransi beda tinggi
 
         /* ===== MODEL ===== */
         this.character = null;
@@ -41,7 +41,7 @@ export class User {
         const loader = new GLTFLoader();
         loader.load(this.modelPath, (gltf) => {
             this.character = gltf.scene;
-            this.character.scale.set(0.5, 0.5, 0.5);
+            this.character.scale.set(0.3, 0.3, 0.3);
             this.scene.add(this.character);
 
             this.mixer = new THREE.AnimationMixer(this.character);
@@ -84,7 +84,8 @@ export class User {
                     if (this.character) {
                         this.character.visible = true;
                         // offset di belakang karakter
-                        const tpOffset = new THREE.Vector3(0, 5, 10);
+                        const tpOffset = new THREE.Vector3(0, 1, 1);
+
                         this.camera.position.copy(
                             this.character.position.clone().add(tpOffset),
                         );
@@ -149,7 +150,7 @@ export class User {
         if (this.keys.d) moveDir.add(right);
         if (this.keys.a) moveDir.addScaledVector(right, -1);
 
-        let bodyMoved = false; // ✅ PENTING
+        let bodyMoved = false;
 
         if (moveDir.lengthSq() > 0) {
             moveDir.normalize();
@@ -157,7 +158,7 @@ export class User {
 
             if (!this.checkCollision(moveDir)) {
                 this.character.position.addScaledVector(moveDir, moveDist);
-                bodyMoved = true; // ✅ hanya true kalau benar-benar pindah
+                bodyMoved = true;
             }
 
             this.character.lookAt(this.character.position.clone().add(moveDir));
@@ -167,7 +168,7 @@ export class User {
         const targetOffset = new THREE.Vector3(0, 1.5, 0);
         orbitControls.target.lerp(
             this.character.position.clone().add(targetOffset),
-            0.1,
+            0.5,
         );
 
         // kamera hanya geser kalau body pindah
