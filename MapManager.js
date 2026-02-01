@@ -70,52 +70,6 @@ export class MapManager {
         });
     }
 
-    // checkCollision(camera) {
-    //     const x = camera.position.x;
-    //     const z = camera.position.z;
-
-    //     if (x < this.boundaries.minX) camera.position.x = this.boundaries.minX;
-    //     if (x > this.boundaries.maxX) camera.position.x = this.boundaries.maxX;
-
-    //     if (z < this.boundaries.minZ) camera.position.z = this.boundaries.minZ;
-    //     if (z > this.boundaries.maxZ) camera.position.z = this.boundaries.maxZ;
-    // }
-    // checkCollision(objectToCheck) {
-    //     // Pastikan objectToCheck ada
-    //     if (!objectToCheck) return;
-
-    //     const x = objectToCheck.position.x;
-    //     const z = objectToCheck.position.z;
-
-    //     // Debugging: Lihat posisi di console (Hapus nanti kalau spam)
-    //     // console.log("Posisi:", x.toFixed(2), z.toFixed(2));
-
-    //     let nabrak = false;
-
-    //     // Cek X
-    //     if (x < this.boundaries.minX) {
-    //         objectToCheck.position.x = this.boundaries.minX;
-    //         nabrak = true;
-    //     }
-    //     if (x > this.boundaries.maxX) {
-    //         objectToCheck.position.x = this.boundaries.maxX;
-    //         nabrak = true;
-    //     }
-
-    //     // Cek Z
-    //     if (z < this.boundaries.minZ) {
-    //         objectToCheck.position.z = this.boundaries.minZ;
-    //         nabrak = true;
-    //     }
-    //     if (z > this.boundaries.maxZ) {
-    //         objectToCheck.position.z = this.boundaries.maxZ;
-    //         nabrak = true;
-    //     }
-
-    //     if (nabrak) {
-    //         console.log("JEDUG! Nabrak Pagar!");
-    //     }
-    // }
     checkCollision(objectToCheck) {
         if (!objectToCheck) return;
 
